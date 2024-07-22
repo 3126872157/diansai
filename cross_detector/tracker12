@@ -1,0 +1,72 @@
+# 快速线性回归（巡线）例程
+#
+# 这个例子展示了如何在OpenMV Cam上使用get_regression（）方法来获得
+# ROI的线性回归。 使用这种方法，你可以轻松地建立一个机器人，它可以
+# 跟踪所有指向相同的总方向但实际上没有连接的线。 在线路上使用
+# find_blobs（），以便更好地过滤选项和控制。
+#
+# 这被称为快速线性回归，因为我们使用最小二乘法来拟合线。然而，这种方法
+# 对于任何具有很多（或者甚至是任何）异常点的图像都是不好的，
+# 这会破坏线条拟合.
+
+
+#from pyb import UART
+
+
+#uart = UART(1, 19200)  #OpenMV RT 用UART(1)这行，注释掉上一行UART(3)
+# OpenMV RT 只有串口UART(1)，对应P4-TX P5-RX; OpenMV4 H7 Plus, OpenMV4 H7, OpenMV3 M7 的UART(1)是P0-RX P1-TX
+
+
+
+
+#设置阈值，（0，100）检测黑色线
+THRESHOLD = (0, 50) # Grayscale threshold for dark things...
+
+#设置是否使用img.binary()函数进行图像分割
+BINARY_VISIBLE = True # 首先执行二进制操作，以便您可以看到正在运行的线性回归...虽然可能会降低FPS。
+
+import sensor, image, time
+from machine import UART
+
+# OpenMV4 H7 Plus, OpenMV4 H7, OpenMV3 M7, OpenMV2 M4 的UART(3)是P4-TX P5-RX
+uart = UART(3, 19200)
+
+sensor.reset()
+sensor.set_pixformat(sensor.GRAYSCALE)
+sensor.set_framesize(sensor.QQVGA)
+sensor.skip_frames(time = 1000)
+clock = time.clock()
+
+while(True):
+    clock.tick()
+    img = sensor.snapshot()
+    img.binary([THRESHOLD])
+    line=0
+    # 找线方法一：
+    # 快速线性回归，使用最小二乘法来拟合线。然而，这种方法
+    # 对于任何具有很多（或者甚至是任何）异常点的图像都是不好的，
+    # 这会破坏线条拟合.
+    #line = img.get_regression([(255,255)])
+
+    # 找线方法二：
+    maxlength=0
+    img.bilateral(1, color_sigma=1, space_sigma=1)
+    #img.invert()
+    for l in img.find_line_segments(threshold = 1000, theta_margin = 5, rho_margin = 5):
+        img.draw_line(l.x1()+20,l.y1(),l.x2()+20,l.y2(), color = 127)
+        if l.length()>maxlength:
+            maxlength=l.length()
+            line=l
+
+
+    if (line):
+        img.draw_line(line.x1()+20,line.y1(),line.x2()+20,line.y2(), color = 127)
+        uart.write("%d" % (line.x1()+line.x2()-img.width()))#直线中点与图像中点x轴距离
+        #print("FPS %f, mag = %s" % (clock.fps(), str(line.magnitude()) if (line) else "N/A"))
+        print("%d" % (line.x1()+line.x2()-img.width()))
+# About negative rho values:
+# 关于负rho值:
+#
+# A [theta+0:-rho] tuple is the same as [theta+180:+rho].
+# A [theta+0:-rho]元组与[theta+180:+rho]相同
+

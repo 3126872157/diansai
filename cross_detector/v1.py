@@ -38,7 +38,7 @@ sensor.reset()
 sensor.set_framesize(sensor.QQVGA)
 sensor.set_pixformat(sensor.GRAYSCALE)
 
-low_threshold = (0, 100)
+black_threshold = (0, 50)
 # high_threshold = (205, 255)
 
 while(True):
@@ -50,12 +50,13 @@ while(True):
     img = sensor.snapshot()
     if enable_lens_corr: img.lens_corr(0.8) # for 2.8mm lens...
     #img.gaussian(1)
-    img.binary([(0, 100)])
+    img.binary([black_threshold])
+    img.invert()
     #img.gaussian(1)
-    img.dilate(2)
+    #img.dilate(2)
     #img.erode(2)
     #img.find_edges(image.EDGE_CANNY, threshold=(50, 80))
-    #img.invert()
+
     img.bilateral(1, color_sigma=1, space_sigma=1)
 
     # for code in img.find_qrcodes():
@@ -74,6 +75,16 @@ while(True):
     #    degree-=90
     #print(degree)
     if blob:
+        lines = img.find_line_segments(merge_distance=10, max_theta_difference=5) # theta和ρ值差异小于边际，则它们合并。
+        # for i in range(len(lines)):
+        #     for j in range(i + 1, len(lines)):
+        #         intersection = calculate_intersection(lines[i], lines[j])
+
+        #         if intersection and intersection[0] and intersection[1]:
+        #             #img.draw_circle(int(intersection[0]),int(intersection[1]),20,(0, 0, 0))
+        #             aver_x += int(intersection[0])
+        #             aver_y += int(intersection[1])
+
         # for wide in range(blob.w()):
         #     if img.get_pixel(blob.x()+wide, blob.y())==0:
         #         img.draw_cross(blob.x()+wide, blob.y(), size=5, color=(150))
@@ -89,15 +100,6 @@ while(True):
         img.draw_cross(int(blob.cxf()), int(blob.cyf()), size=5, color=(100))
         #img.draw_rectangle(blob.rect(), size=5, color=(150))
 
-        lines = img.find_line_segments(merge_distance=10, max_theta_difference=5) # theta和ρ值差异小于边际，则它们合并。
-        # for i in range(len(lines)):
-        #     for j in range(i + 1, len(lines)):
-        #         intersection = calculate_intersection(lines[i], lines[j])
-
-        #         if intersection and intersection[0] and intersection[1]:
-        #             #img.draw_circle(int(intersection[0]),int(intersection[1]),20,(0, 0, 0))
-        #             aver_x += int(intersection[0])
-        #             aver_y += int(intersection[1])
 
         for l in lines:
             if (min_degree <= l.theta()) and (l.theta() <= max_degree) and l.length()>25:
