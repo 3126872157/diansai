@@ -1,0 +1,26 @@
+--cpu Cortex-M3
+"c8t6_zero_project\startup_stm32f103xb.o"
+"c8t6_zero_project\main.o"
+"c8t6_zero_project\gpio.o"
+"c8t6_zero_project\tim.o"
+"c8t6_zero_project\stm32f1xx_it.o"
+"c8t6_zero_project\stm32f1xx_hal_msp.o"
+"c8t6_zero_project\sr04.o"
+"c8t6_zero_project\stm32f1xx_hal_gpio_ex.o"
+"c8t6_zero_project\stm32f1xx_hal_tim.o"
+"c8t6_zero_project\stm32f1xx_hal_tim_ex.o"
+"c8t6_zero_project\stm32f1xx_hal.o"
+"c8t6_zero_project\stm32f1xx_hal_rcc.o"
+"c8t6_zero_project\stm32f1xx_hal_rcc_ex.o"
+"c8t6_zero_project\stm32f1xx_hal_gpio.o"
+"c8t6_zero_project\stm32f1xx_hal_dma.o"
+"c8t6_zero_project\stm32f1xx_hal_cortex.o"
+"c8t6_zero_project\stm32f1xx_hal_pwr.o"
+"c8t6_zero_project\stm32f1xx_hal_flash.o"
+"c8t6_zero_project\stm32f1xx_hal_flash_ex.o"
+"c8t6_zero_project\stm32f1xx_hal_exti.o"
+"c8t6_zero_project\system_stm32f1xx.o"
+--strict --scatter "c8t6_zero_project\c8t6_zero_project.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "c8t6_zero_project.map" -o c8t6_zero_project\c8t6_zero_project.axf
