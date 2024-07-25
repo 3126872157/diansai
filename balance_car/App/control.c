@@ -23,15 +23,15 @@ float target_speed = 0;
 float motor1_out;
 float motor2_out;
 
-//¼¸ÖÖpwm
-float vertical_pwm;
-float velocity_pwm;
+//¼¸ÖÖÊä³ö
+float vertical_out;
+float velocity_out;
 
 void emergency_shut_motor()
 {
 	if(pitch >= 30 || pitch <= -30)
 	{
-		motor1_out = 0;
+		vertical_out = 0;
 		motor2_out = 0;
 		//HAL_GPIO_WritePin(STBY_GPIO_Port,STBY_Pin,GPIO_PIN_RESET);	//STBYÖÃÁã£¬Ê§ÄÜµç»úÇý¶¯°å
 	}
@@ -53,20 +53,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)						//¶¨Ê±Æ÷»Øµ÷º¯Ê
 		motor1_speed = (float)motor1_counter / (ENCODER_MODE * MOTOR_SPEED_RERATIO * PULSE_PRE_ROUND) * GAP_FREQ;		//³ýÒÔ±¶ÆµÊý£¬¼õËÙ±ÈºÍÏßÊý£¬ÔÙ³ËÉÏ
 		motor2_speed = (float)motor2_counter / (ENCODER_MODE * MOTOR_SPEED_RERATIO * PULSE_PRE_ROUND) * GAP_FREQ * -1;	//ÊÖ¶¯µ÷Õû£¬ÏòÇ°×ªspeedÎªÕýÊý
 		
-		//Ö±Á¢»·
-		vertical_pwm = balance(pitch , gyro);
-		
 		//ËÙ¶È»·
-		velocity_pwm = Velocity(motor1_speed , motor2_speed , target_speed );
-			
-		//pwmÊä³ö
-		motor1_out = vertical_pwm + velocity_pwm;
-		motor2_out = vertical_pwm + velocity_pwm;
+		velocity_out = Velocity(motor1_speed , motor2_speed , target_speed);
+		
+		//Ö±Á¢»·
+		vertical_out = balance(pitch, gyro, velocity_out);
 		
 		//·ÀË¤µ¹³é·ç
 		emergency_shut_motor();
-			
+		
 		//pwmÊä³ö
-		setPWM(motor1_out,motor2_out);
+		setPWM(vertical_out, vertical_out);
 	}
 }

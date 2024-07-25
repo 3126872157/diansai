@@ -5,6 +5,9 @@
 int motor1_offset = 200;	//给pid死区加的偏置
 int motor2_offset = 90;
 
+float last_speed;
+float last_encoder;
+
 void Motor_Init(void)
 {
     HAL_TIM_Encoder_Start(&ENCODER_TIM1, TIM_CHANNEL_ALL);      //开启编码器定时器
@@ -16,6 +19,9 @@ void Motor_Init(void)
     HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_1);           		//开启PWM
     __HAL_TIM_SET_COUNTER(&ENCODER_TIM1, 0);                	//编码器定时器初始值设定为0
 	__HAL_TIM_SET_COUNTER(&ENCODER_TIM2, 0);
+	
+//	last_speed = 0;
+//	last_encoder = 0;
 	
 	HAL_GPIO_WritePin(STBY_GPIO_Port,STBY_Pin,GPIO_PIN_SET);	//STBY置高电平，使能电机驱动板
    

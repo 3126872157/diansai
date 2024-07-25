@@ -205,6 +205,21 @@
           <WinNumber>1</WinNumber>
           <ItemText>target_speed</ItemText>
         </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>motor1_offset,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>motor2_offset,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Velocity_kd</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -221,6 +236,11 @@
           <count>2</count>
           <WinNumber>2</WinNumber>
           <ItemText>motor2_speed</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>\\balance_car\../App/control.c\target_speed</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>

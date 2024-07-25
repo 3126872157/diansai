@@ -802,7 +802,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x657EEEA5)
 F (..\App\MPU6050\MPU6050.h)(0x6697B7DB)()
-F (..\App\motor.c)(0x6698EB84)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../App/MPU6050-I.\RTE\_balance_car-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o balance_car\motor.o --omf_browse balance_car\motor.crf --depend balance_car\motor.d)
+F (..\App\motor.c)(0x66A26BCE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../App/MPU6050-I.\RTE\_balance_car-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o balance_car\motor.o --omf_browse balance_car\motor.crf --depend balance_car\motor.d)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x657EEEA4)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h)(0x657EEEA4)
 I (../Drivers/CMSIS/Include/core_cm3.h)(0x657EEE74)
@@ -869,10 +869,10 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x657EEEA5)
 I (../Core/Inc/tim.h)(0x6697A48F)
 I (../Core/Inc/main.h)(0x66981339)
 F (..\App\encoder.h)(0x6697D3C6)()
-F (..\App\pid.c)(0x6698ED39)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../App/MPU6050-I.\RTE\_balance_car-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o balance_car\pid.o --omf_browse balance_car\pid.crf --depend balance_car\pid.d)
-I (..\App\pid.h)(0x6698E036)
-F (..\App\pid.h)(0x6698E036)()
-F (..\App\control.c)(0x6698E161)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../App/MPU6050-I.\RTE\_balance_car-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o balance_car\control.o --omf_browse balance_car\control.crf --depend balance_car\control.d)
+F (..\App\pid.c)(0x66A26BCE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../App/MPU6050-I.\RTE\_balance_car-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o balance_car\pid.o --omf_browse balance_car\pid.crf --depend balance_car\pid.d)
+I (..\App\pid.h)(0x66A256DC)
+F (..\App\pid.h)(0x66A256DC)()
+F (..\App\control.c)(0x66A269F6)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../App/MPU6050-I.\RTE\_balance_car-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o balance_car\control.o --omf_browse balance_car\control.crf --depend balance_car\control.d)
 I (..\App\encoder.h)(0x6697D3C6)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x657EEEA4)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h)(0x657EEEA4)
@@ -904,7 +904,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x657EEEA5)
 I (../Core/Inc/tim.h)(0x6697A48F)
 I (../Core/Inc/main.h)(0x66981339)
-I (..\App\pid.h)(0x6698E036)
+I (..\App\pid.h)(0x66A256DC)
 I (..\App\motor.h)(0x6697D2E3)
 I (..\App\control.h)(0x6697C922)
 I (../App/MPU6050/MPU6050.h)(0x6697B7DB)
