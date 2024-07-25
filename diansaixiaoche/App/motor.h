@@ -22,9 +22,10 @@ typedef struct _Motor
     int32_t totalCount;  	//总计数值
     int16_t overflowNum; 	//溢出次数
     float speed;         	//电机转速
+	float last_speed;		//用于低通滤波
     uint8_t direct;      	//旋转方向
 	int offset;				//给pid死区加的偏置
-	float distance;
+	float distance;			//轮子行走距离，单位cm
 }Motor;
 
 void Motor_Init(void);
