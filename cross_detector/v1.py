@@ -35,10 +35,10 @@ white = (0, 0, -5, 5, -5, 5)
 sensor.reset()
 #sensor.set_auto_gain(False) # 关闭自动自动增益。默认开启的，在颜色识别中，一定要关闭白平衡。
 #sensor.set_auto_whitebal(False)
-sensor.set_framesize(sensor.QQVGA)
+sensor.set_framesize(sensor.QVGA)
 sensor.set_pixformat(sensor.GRAYSCALE)
 
-black_threshold = (0, 50)
+black_threshold = (0, 150)
 # high_threshold = (205, 255)
 
 while(True):
