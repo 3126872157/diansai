@@ -30,4 +30,4 @@ diansaixiaoche\i2c.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 diansaixiaoche\i2c.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 diansaixiaoche\i2c.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 diansaixiaoche\i2c.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
-diansaixiaoche\i2c.o: ..\App\struct_typedef.h
+diansaixiaoche\i2c.o: ../App/struct_typedef.h

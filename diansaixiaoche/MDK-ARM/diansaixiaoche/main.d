@@ -29,11 +29,12 @@ diansaixiaoche\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 diansaixiaoche\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 diansaixiaoche\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 diansaixiaoche\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
-diansaixiaoche\main.o: ..\App\struct_typedef.h
+diansaixiaoche\main.o: ../App/struct_typedef.h
 diansaixiaoche\main.o: ../Core/Inc/i2c.h
 diansaixiaoche\main.o: ../Core/Inc/tim.h
 diansaixiaoche\main.o: ../Core/Inc/usart.h
 diansaixiaoche\main.o: ../Core/Inc/gpio.h
 diansaixiaoche\main.o: C:\Users\Ken.Liang\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 diansaixiaoche\main.o: C:\Users\Ken.Liang\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
-diansaixiaoche\main.o: ..\App\Motor.h
+diansaixiaoche\main.o: ../App/Motor.h
+diansaixiaoche\main.o: ../App/control.h

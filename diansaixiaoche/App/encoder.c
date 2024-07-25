@@ -45,8 +45,11 @@ void encoder_get_speed(void)
         motor2.totalCount = COUNTER2 + motor2.overflowNum * RELOADVALUE2;
     }
 	
-	motor1.speed = (float)(motor1.totalCount - motor1.lastCount) / (ENCODER_MODE * MOTOR_SPEED_RERATIO * PULSE_PRE_ROUND) * GAP_FREQ;			//除以倍频数，减速比和线数，再乘上计数器频率
-	motor2.speed = (float)(motor2.totalCount - motor2.lastCount) / (ENCODER_MODE * MOTOR_SPEED_RERATIO * PULSE_PRE_ROUND) * GAP_FREQ * -1;    //手动调整，向前转speed为正数
+	motor1.speed = (float)(motor1.totalCount - motor1.lastCount) / (ENCODER_MODE * MOTOR_SPEED_RERATIO * PULSE_PRE_ROUND) * GAP_FREQ * -1;		//除以倍频数，减速比和线数，再乘上计数器频率
+	motor2.speed = (float)(motor2.totalCount - motor2.lastCount) / (ENCODER_MODE * MOTOR_SPEED_RERATIO * PULSE_PRE_ROUND) * GAP_FREQ;    		//手动调整，向前转speed为正数
+	
+	motor1.distance = (float)(motor1.totalCount - CNT_RESET) / (ENCODER_MODE * MOTOR_SPEED_RERATIO * PULSE_PRE_ROUND) * LINE_SPEED_C * -1;
+	motor2.distance = (float)(motor2.totalCount - CNT_RESET) / (ENCODER_MODE * MOTOR_SPEED_RERATIO * PULSE_PRE_ROUND) * LINE_SPEED_C;
 	
 	//记录这一次的计数值
 	motor1.lastCount = motor1.totalCount;

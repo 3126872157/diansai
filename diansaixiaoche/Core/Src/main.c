@@ -30,6 +30,7 @@
 #include <string.h>
 //#include "MPU6050.h"
 #include "Motor.h"
+#include "control.h"
 
 /* USER CODE END Includes */
 
@@ -58,9 +59,11 @@
 //extern float roll;
 
 //测试用
-int motor1 = 0;
-int motor2 = 0;
-
+extern Motor motor1;
+extern Motor motor2;
+extern float target_speed1;
+extern float target_speed2;
+	
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -82,7 +85,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+	
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -122,6 +125,8 @@ int main(void)
 //		}
 //	}
 
+	//初始化
+	control_init();
 	
   /* USER CODE END 2 */
 
@@ -129,7 +134,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	
+	printf("%f,%f,%f,%f\n", target_speed1, motor1.distance, target_speed2 , motor2.speed);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -177,6 +182,19 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+int fputc(int ch,FILE *f)
+{
+  HAL_UART_Transmit(&huart1,(uint8_t *)&ch,1,1000);  //使用UART1，重定向
+  return ch;
+}
+
+int fgetc(FILE * F)    
+{
+  uint8_t ch_r;
+  HAL_UART_Receive (&huart1,&ch_r,1,0xffff);		//接收
+  return ch_r;
+}
 
 /* USER CODE END 4 */
 

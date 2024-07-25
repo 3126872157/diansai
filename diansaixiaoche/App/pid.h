@@ -60,7 +60,7 @@ extern fp32 PID_calc(pid_type_def *pid, fp32 ref, fp32 set);
   */
 extern void PID_clear(pid_type_def *pid);
 
-void my_pid_init(pid_type_def *pid1, pid_type_def *pid2, fp32 max_out, fp32 max_iout);
+void my_pid_init(pid_type_def *pid1, pid_type_def *pid2, fp32 max_out1, fp32 max_iout1, fp32 max_out2, fp32 max_iout2);
 float balance(float Angle,float Gyro);
 float Velocity(float Encoder_A,float Encoder_B,float Mechanical_velocity);
 

@@ -31,7 +31,7 @@ diansaixiaoche\control.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_
 diansaixiaoche\control.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 diansaixiaoche\control.o: ../Core/Inc/tim.h
 diansaixiaoche\control.o: ../Core/Inc/main.h
-diansaixiaoche\control.o: ..\App\struct_typedef.h
+diansaixiaoche\control.o: ../App/struct_typedef.h
 diansaixiaoche\control.o: ..\App\pid.h
 diansaixiaoche\control.o: ..\App\motor.h
 diansaixiaoche\control.o: ..\App\control.h

@@ -29,4 +29,4 @@ diansaixiaoche\stm32f1xx_hal_msp.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1x
 diansaixiaoche\stm32f1xx_hal_msp.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 diansaixiaoche\stm32f1xx_hal_msp.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 diansaixiaoche\stm32f1xx_hal_msp.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
-diansaixiaoche\stm32f1xx_hal_msp.o: ..\App\struct_typedef.h
+diansaixiaoche\stm32f1xx_hal_msp.o: ../App/struct_typedef.h

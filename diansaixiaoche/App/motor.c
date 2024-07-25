@@ -18,8 +18,8 @@ void Motor_Init(void)
 	__HAL_TIM_SET_COUNTER(&ENCODER_TIM2, CNT_RESET);
 	
 	//设置电机pwm死区
-	motor1.offset = 0;
-	motor2.offset = 0;
+	motor1.offset = 260;
+	motor2.offset = 250;
 	
 	//motor结构体初始化
 	motor1.lastCount = 0;

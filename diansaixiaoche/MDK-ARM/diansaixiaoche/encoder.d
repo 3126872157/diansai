@@ -31,5 +31,6 @@ diansaixiaoche\encoder.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_
 diansaixiaoche\encoder.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 diansaixiaoche\encoder.o: ../Core/Inc/tim.h
 diansaixiaoche\encoder.o: ../Core/Inc/main.h
-diansaixiaoche\encoder.o: ..\App\struct_typedef.h
+diansaixiaoche\encoder.o: ../App/struct_typedef.h
 diansaixiaoche\encoder.o: ..\App\motor.h
+diansaixiaoche\encoder.o: ..\App\control.h

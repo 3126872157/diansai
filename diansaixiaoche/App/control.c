@@ -6,8 +6,8 @@
 #include "main.h"
 #include "pid.h"
 
-pid_type_def pid1;
-pid_type_def pid2;
+pid_type_def speed_pid;
+pid_type_def distance_pid;
 
 extern Motor motor1;
 extern Motor motor2;
@@ -24,13 +24,16 @@ short gyro;		//½Ç¼ÓËÙ¶È£¬ÓÃÓÚÖ±Á¢»·£¬Õâ¸öÊÇ´Ómpu6050.cÀï¶Á³ö        ÒÉÎÊ£ºshort×
 
 //µ÷ÊÔÓÃ
 float target_distance;
+float target_speed1 = 0;
+float target_speed2 = 0;
 
 //µ¥Î»ÊÇrpm
 float motor1_speed;		//motor1ÎªÓÒµç»ú£¬ÏòÇ°speedÎª+
 float motor2_speed;		//motor2Îª×óµç»ú£¬ÏòÇ°speedÎª-
 
-float target_speed = 0;
-
+//pidÊä³ö
+float distance_out1;
+float distance_out2;
 float motor1_out;
 float motor2_out;
 
@@ -41,7 +44,7 @@ float velocity_pwm;
 void control_init(void)
 {
 	Motor_Init();
-	my_pid_init(&pid1, &pid2, 8000, 10000);		//ºóÃæÁ½¸ö²ÎÊıÊÇpwmÏŞ·ùºÍ»ı·ÖÏŞ·ù
+	my_pid_init(&speed_pid, &distance_pid, 8000, 10000, 5000, 10000);		//ºóÃæÁ½¸ö²ÎÊıÊÇpwmÏŞ·ùºÍ»ı·ÖÏŞ·ù
 }
 
 void emergency_shut_motor()
@@ -72,8 +75,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)						//¶¨Ê±Æ÷»Øµ÷º¯Ê
 		emergency_shut_motor();
 		
 		//´®¼¶ËÙ¶ÈÎ»ÖÃpid»·
-		motor1_out = PID_calc(&pid1, motor1.speed, PID_calc(&pid1, motor1.distance, target_distance));
-		motor2_out = PID_calc(&pid2, motor2.speed, PID_calc(&pid2, motor2.distance, target_distance));
+		distance_out1 = PID_calc(&distance_pid, motor1.distance, target_distance);
+		distance_out2 = PID_calc(&distance_pid, motor2.distance, target_distance);
+		motor1_out = PID_calc(&speed_pid, motor1.speed, distance_out1);
+		motor2_out = PID_calc(&speed_pid, motor2.speed, distance_out2);
 		
 		//pwmÊä³ö
 		setPWM(motor1_out, motor2_out);
