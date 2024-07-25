@@ -6,7 +6,7 @@ uart = pyb.UART(3, 115200, timeout_char = 1000)
 # OpenMV4 H7 Plus, OpenMV4 H7, OpenMV3 M7, OpenMV2 M4 的UART(3)是P4-TX P5-RX
 
 ########串口发送数据函数处理#########
-def UartSendDate(data):  #这个函数不能运行太快，否则会导致串口读取太快导致出错
+def UartSendDate(data):
 
     prefix_elements = [0x2C, 0x12]
     suffix_elements = [0x5B]
