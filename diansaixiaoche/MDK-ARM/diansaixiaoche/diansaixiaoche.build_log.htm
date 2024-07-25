@@ -1,0 +1,96 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.40.0.0
+Copyright (C) 2024 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 1 Ken.Liang, 1, LIC=GMZI6-DGZB0-UH48H-W82PK-YXSRN-UJUA2
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.40.0.3
+Toolchain Path:  C:\Users\Ken.Liang\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.40.0.3
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.3.0.0
+Dialog DLL:      TCM.DLL V1.56.4.0
+ 
+<h2>Project:</h2>
+C:\Test\university learn\diansai\diansaixiaoche\MDK-ARM\diansaixiaoche.uvprojx
+Project File Date:  07/25/2024
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Users\Ken.Liang\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin'
+Build target 'diansaixiaoche'
+compiling main.c...
+..\App\Motor.h(26): error:  #65: expected a ";"
+  	int motor1_offset = 0;	//给pid死区加的偏置
+..\App\Motor.h(27): error:  #65: expected a ";"
+  	int motor2_offset = 0;
+../Core/Src/main.c: 0 warnings, 2 errors
+compiling i2c.c...
+compiling stm32f1xx_hal_msp.c...
+compiling gpio.c...
+compiling usart.c...
+compiling stm32f1xx_it.c...
+compiling tim.c...
+compiling Motor.c...
+..\App\motor.h(26): error:  #65: expected a ";"
+  	int motor1_offset = 0;	//给pid死区加的偏置
+..\App\motor.h(27): error:  #65: expected a ";"
+  	int motor2_offset = 0;
+..\App\Motor.c(38): error:  #20: identifier "motor1_offset" is undefined
+  		__HAL_TIM_SetCompare(&MOTOR1_TIM, MOTOR1_CHANNEL, motor1_out + motor1_offset);	//pid死区
+..\App\Motor.c(44): error:  #20: identifier "motor1_offset" is undefined
+  		__HAL_TIM_SetCompare(&MOTOR1_TIM, MOTOR1_CHANNEL, - motor1_out + motor1_offset);
+..\App\Motor.c(51): error:  #20: identifier "motor2_offset" is undefined
+  		__HAL_TIM_SetCompare(&MOTOR2_TIM, MOTOR2_CHANNEL, motor2_out + motor2_offset);
+..\App\Motor.c(57): error:  #20: identifier "motor2_offset" is undefined
+  		__HAL_TIM_SetCompare(&MOTOR2_TIM, MOTOR2_CHANNEL, - motor2_out + motor2_offset);
+..\App\Motor.c: 0 warnings, 6 errors
+compiling Control.c...
+..\App\motor.h(26): error:  #65: expected a ";"
+  	int motor1_offset = 0;	//给pid死区加的偏置
+..\App\motor.h(27): error:  #65: expected a ";"
+  	int motor2_offset = 0;
+..\App\Control.c: 0 warnings, 2 errors
+compiling Encoder.c...
+..\App\motor.h(26): error:  #65: expected a ";"
+  	int motor1_offset = 0;	//给pid死区加的偏置
+..\App\motor.h(27): error:  #65: expected a ";"
+  	int motor2_offset = 0;
+..\App\Encoder.c: 0 warnings, 2 errors
+"diansaixiaoche\diansaixiaoche.axf" - 12 Error(s), 0 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                https://www.keil.com/pack/ARM.CMSIS.6.1.0.pack
+                ARM::CMSIS@6.1.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 6.1.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32F1xx_DFP.2.4.1.pack
+                Keil::STM32F1xx_DFP@2.4.1
+                STMicroelectronics STM32F1 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/_diansaixiaoche
+  C:/Users/Ken.Liang/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include
+  C:/Users/Ken.Liang/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE@6.1.0
+      Include file:  CMSIS/Core/Include/tz_context.h
+Target not created.
+Build Time Elapsed:  00:00:11
+</pre>
+</body>
+</html>
