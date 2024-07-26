@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "encoder.h": "c",
+        "pid.h": "c",
+        "struct_typedef.h": "c",
+        "motor.h": "c",
+        "main.h": "c",
+        "control.h": "c"
+    }
+}

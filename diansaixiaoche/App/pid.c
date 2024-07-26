@@ -22,6 +22,9 @@ float Velocity_ki = 0.2;
 //调试用，pid三个参数
 float k1[3] = {1500, 250, 5};	//速度环
 float k2[3] = {0, 0, 0};		//位置环
+//!
+float k3[3] = {0, 0, 0};		//巡线环
+
 
 float zhongzhi = -0.5;
 
@@ -75,10 +78,12 @@ void PID_init(pid_type_def *pid, uint8_t mode, const fp32 PID[3], fp32 max_out, 
     pid->error[0] = pid->error[1] = pid->error[2] = pid->Pout = pid->Iout = pid->Dout = pid->out = 0.0f;
 }
 
-void my_pid_init(pid_type_def *pid1, pid_type_def *pid2, fp32 max_out1, fp32 max_iout1, fp32 max_out2, fp32 max_iout2)
+void my_pid_init(pid_type_def *pid1, pid_type_def *pid2,pid_type_def *pid3, fp32 max_out1, fp32 max_iout1, fp32 max_out2, fp32 max_iout2, fp32 max_out3, fp32 max_iout3)
 {
 	PID_init(pid1, PID_POSITION, k1, max_out1, max_iout1); 
 	PID_init(pid2, PID_POSITION, k2, max_out2, max_iout2);
+    //!
+    PID_init(pid3, PID_POSITION, k3, max_out3, max_iout3);
 }
 
 /**

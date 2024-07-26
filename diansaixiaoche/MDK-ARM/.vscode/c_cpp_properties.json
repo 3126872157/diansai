@@ -3,15 +3,16 @@
         {
             "name": "diansaixiaoche",
             "includePath": [
-                "c:\\Test\\university learn\\diansai\\diansaixiaoche\\Core\\Inc",
-                "c:\\Test\\university learn\\diansai\\diansaixiaoche\\Drivers\\STM32F1xx_HAL_Driver\\Inc",
-                "c:\\Test\\university learn\\diansai\\diansaixiaoche\\Drivers\\STM32F1xx_HAL_Driver\\Inc\\Legacy",
-                "c:\\Test\\university learn\\diansai\\diansaixiaoche\\Drivers\\CMSIS\\Device\\ST\\STM32F1xx\\Include",
-                "c:\\Test\\university learn\\diansai\\diansaixiaoche\\Drivers\\CMSIS\\Include",
-                "c:\\Test\\university learn\\diansai\\diansaixiaoche\\App",
-                "c:\\Test\\university learn\\diansai\\diansaixiaoche\\MDK-ARM",
-                "c:\\Test\\university learn\\diansai\\diansaixiaoche\\Core\\Src",
-                "c:\\Test\\university learn\\diansai\\diansaixiaoche\\Drivers\\STM32F1xx_HAL_Driver\\Src"
+                "d:\\Project\\diansai\\diansai\\diansaixiaoche\\Core\\Inc",
+                "d:\\Project\\diansai\\diansai\\diansaixiaoche\\Drivers\\STM32F1xx_HAL_Driver\\Inc",
+                "d:\\Project\\diansai\\diansai\\diansaixiaoche\\Drivers\\STM32F1xx_HAL_Driver\\Inc\\Legacy",
+                "d:\\Project\\diansai\\diansai\\diansaixiaoche\\Drivers\\CMSIS\\Device\\ST\\STM32F1xx\\Include",
+                "d:\\Project\\diansai\\diansai\\diansaixiaoche\\Drivers\\CMSIS\\Include",
+                "d:\\Project\\diansai\\diansai\\diansaixiaoche\\App",
+                "E:\\Software\\keil5\\ARM\\ARMCC\\include",
+                "d:\\Project\\diansai\\diansai\\diansaixiaoche\\MDK-ARM",
+                "d:\\Project\\diansai\\diansai\\diansaixiaoche\\Core\\Src",
+                "d:\\Project\\diansai\\diansai\\diansaixiaoche\\Drivers\\STM32F1xx_HAL_Driver\\Src"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

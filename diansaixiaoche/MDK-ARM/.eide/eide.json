@@ -306,7 +306,6 @@
           "../Drivers/CMSIS/Device/ST/STM32F1xx/Include",
           "../Drivers/CMSIS/Include",
           "../App",
-          ".cmsis/include",
           "RTE/_diansaixiaoche"
         ],
         "libList": [],

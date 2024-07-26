@@ -74,7 +74,8 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+	uint8_t rx_buffer;
+  uint8_t openmv_receive[2];
 /* USER CODE END 0 */
 
 /**
@@ -85,7 +86,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -128,6 +129,7 @@ int main(void)
 	//³õÊ¼»¯
 	control_init();
 	
+  HAL_UART_Receive_IT(&huart1,(uint8_t*)rx_buffer, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -196,6 +198,63 @@ int fgetc(FILE * F)
   return ch_r;
 }
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if(huart->Instance==USART1){
+    static int cnt;
+    switch(cnt){
+      case 1:
+        if(rx_buffer == 0x00){
+          cnt++;
+          break;
+        }
+        else{
+          cnt=0;
+          break;
+        }
+      case 2:
+        if(rx_buffer == 0x00){
+          cnt++;
+          break;
+        }
+        else{
+          cnt=0;
+          break;
+        }      
+      case 3:
+        if(rx_buffer == 0x79){
+          cnt++;
+          break;
+        }
+        else{
+          cnt=0;
+          break;
+        }      
+      case 4:
+        if(rx_buffer == 0x80){
+          cnt++;
+          break;
+        }
+        else{
+          cnt=0;
+          break;
+        }
+      case 5:
+        openmv_receive[DELTA_X] = rx_buffer;
+        cnt++;
+        break;
+      case 6:
+        openmv_receive[DELTA_Y] = rx_buffer;
+        cnt=0;
+        break;
+      default:
+        cnt=0;
+        break;
+    }
+
+    HAL_UART_Transmit_IT(&huart1,(uint8_t*)rx_buffer, 1);
+ }
+}
 /* USER CODE END 4 */
 
 /**

@@ -8,6 +8,8 @@
 
 pid_type_def speed_pid;
 pid_type_def distance_pid;
+//!
+pid_type_def follow_line_pid;
 
 extern Motor motor1;
 extern Motor motor2;
@@ -27,6 +29,9 @@ float target_distance;
 float target_speed1 = 0;
 float target_speed2 = 0;
 
+//Ñ²Ïß»·Ä¿±ê(!)
+float follow_line_target =0;
+
 //µ¥Î»ÊÇrpm
 float motor1_speed;		//motor1ÎªÓÒµç»ú£¬ÏòÇ°speedÎª+
 float motor2_speed;		//motor2Îª×óµç»ú£¬ÏòÇ°speedÎª-
@@ -36,6 +41,8 @@ float distance_out1;
 float distance_out2;
 float motor1_out;
 float motor2_out;
+//Ñ²Ïß»·pidÊä³ö£¨£¡£©
+float follow_line_turn_out;
 
 //¼¸ÖÖpwm
 float vertical_pwm;
@@ -44,7 +51,7 @@ float velocity_pwm;
 void control_init(void)
 {
 	Motor_Init();
-	my_pid_init(&speed_pid, &distance_pid, 8000, 10000, 5000, 10000);		//ºóÃæÁ½¸ö²ÎÊýÊÇpwmÏÞ·ùºÍ»ý·ÖÏÞ·ù
+	my_pid_init(&speed_pid, &distance_pid, &follow_line_pid, 8000, 10000, 5000, 10000,5000, 10000);		//ºóÃæÁ½¸ö²ÎÊýÊÇpwmÏÞ·ùºÍ»ý·ÖÏÞ·ù
 }
 
 void emergency_shut_motor()
@@ -80,7 +87,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)						//¶¨Ê±Æ÷»Øµ÷º¯Ê
 		motor1_out = PID_calc(&speed_pid, motor1.speed, distance_out1);
 		motor2_out = PID_calc(&speed_pid, motor2.speed, distance_out2);
 		
+		//Ñ²Ïß»·pid»·£¡
+		follow_line_turn_out = PID_calc(&follow_line_pid, openmv_receive[DELTA_X], follow_line_target);
 		//pwmÊä³ö
-		setPWM(motor1_out, motor2_out);
+		setPWM(motor1_out-follow_line_turn_out, motor2_out+follow_line_turn_out);
 	}
 }

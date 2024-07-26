@@ -4,43 +4,38 @@ float balance_kp = 350;
 float balance_kd = 1;
 float Velocity_kp = 1000;
 float Velocity_ki = 0.2;
-float Velocity_kd = 0;
 
 float zhongzhi = -0.5;
 
-extern float target_speed;
-extern float last_speed;
-extern float last_encoder;
-
-float balance(float Angle, float Gyro, float velocity_pid)     //Ö±Á¢»·
-{  
+float balance(float Angle, float Gyro) // ç›´ç«‹ç¯
+{
 	float Bias;
 	int balance;
-	Bias = Angle - velocity_pid;       		
-	balance=balance_kp * Bias + Gyro * balance_kd;   		//¼ÆËãÆ½ºâ¿ØÖÆµÄµç»úPWM  PD¿ØÖÆ   kpÊÇPÏµÊı kdÊÇDÏµÊı 
+	Bias = Angle - zhongzhi;
+	balance = balance_kp * Bias + Gyro * balance_kd;
+	// è®¡ç®—å¹³è¡¡æ§åˆ¶çš„ç”µæœºPWM  PDæ§åˆ¶   kpæ˜¯Pç³»æ•° kdæ˜¯Dç³»æ•°
 	return balance;
 }
 
 extern float pitch;
-float Velocity(float Encoder_A,float Encoder_B,float Mechanical_velocity)
+float Velocity(float Encoder_A, float Encoder_B, float Mechanical_velocity)
 {
-	float velocity,Encoder_Least;										//ËÙ¶È»·¿ØÖÆPWM,»ñÈ¡×îĞÂËÙ¶ÈÆ«²î
-	static float Encoder,Encoder_Integral; 								//Ò»½×µÍÍ¨ÂË²¨ºóµÄËÙ¶ÈÖµ£¬ËÙ¶ÈµÄ»ı·Ö£»ÒòÎª»ı·ÖÀÛ¼ÓºÍÂË²¨µÄĞèÒª£¬¹ÊÉèÖÃÎª¾²Ì¬Á¿£¬´æ´¢ÔÚÈ«¾ÖÇøÓòÀàËÆÓÚÈ«¾Ö±äÁ¿
+	float velocity, Encoder_Least;
+	// é€Ÿåº¦ç¯æ§åˆ¶PWM,è·å–æœ€æ–°é€Ÿåº¦åå·®
+	static float Encoder, Encoder_Integral;
+	// ä¸€é˜¶ä½é€šæ»¤æ³¢åçš„é€Ÿåº¦å€¼ï¼Œé€Ÿåº¦çš„ç§¯åˆ†ï¼›å› ä¸ºç§¯åˆ†ç´¯åŠ å’Œæ»¤æ³¢çš„éœ€è¦ï¼Œæ•…è®¾ç½®ä¸ºé™æ€é‡ï¼Œå­˜å‚¨åœ¨å…¨å±€åŒºåŸŸç±»ä¼¼äºå…¨å±€å˜é‡
 
-	Encoder_Least =( Encoder_A + Encoder_B ) - Mechanical_velocity; 	//»ñÈ¡×îĞÂËÙ¶ÈÆ«²î==²âÁ¿ËÙ¶È£¨×óÓÒ±àÂëÆ÷Ö®ºÍ£©-Ä¿±êËÙ¶È                                            
-	Encoder = Encoder * 0.8 + Encoder_Least * 0.2; 						//Ò»½×µÍÍ¨ÂË²¨Æ÷,¼õĞ¡ËÙ¶È»·¶ÔÓÚÖ±Á¢»·µÄ¸ºÃæÓ°Ïì
-	
-	Encoder_Integral += Encoder;               							//»ı·Ö£¬¾ÍÊÇÀÛ¼Ó
-	Encoder_Integral = Encoder_Integral > 10000 ? 10000 : ( Encoder_Integral < -10000 ? -10000 : Encoder_Integral ); //»ı·ÖÏŞ·ù
-//	velocity = Velocity_kp * Encoder + Velocity_ki * Encoder_Integral + Velocity_kd * (Encoder - last_encoder);  //ËÙ¶È¿ØÖÆ PI¿ØÖÆ   Velocity_KPÊÇPÏµÊı,Velocity_KIÊÇIÏµÊı
+	Encoder_Least = (Encoder_A + Encoder_B) - Mechanical_velocity;
+	// è·å–æœ€æ–°é€Ÿåº¦åå·®==æµ‹é‡é€Ÿåº¦ï¼ˆå·¦å³ç¼–ç å™¨ä¹‹å’Œï¼‰-ç›®æ ‡é€Ÿåº¦
+	Encoder = Encoder * 0.8 + Encoder_Least * 0.2;
+	// ä¸€é˜¶ä½é€šæ»¤æ³¢å™¨,å‡å°é€Ÿåº¦ç¯å¯¹äºç›´ç«‹ç¯çš„è´Ÿé¢å½±å“
+	Encoder_Integral += Encoder;
+	// ç§¯åˆ†ï¼Œå°±æ˜¯ç´¯åŠ 
+	Encoder_Integral = Encoder_Integral > 10000 ? 10000 : (Encoder_Integral < -10000 ? -10000 : Encoder_Integral); // ç§¯åˆ†é™å¹…
 	velocity = Velocity_kp * Encoder + Velocity_ki * Encoder_Integral;
-	
-	//if(target_speed != last_speed) Encoder_Integral=0;					//ËÙ¶ÈÊ±¸Ä±äÇå³ı»ı·Ö
-	if(pitch <= -30.0 || pitch >= 30.0) Encoder_Integral=0;   			//µç»ú¹Ø±ÕºóÇå³ı»ı·Ö
-	
-	//¸üĞÂÊı¾İ
-//	last_speed = target_speed;
-//	last_encoder = Encoder;
-	
+	// é€Ÿåº¦æ§åˆ¶ PIæ§åˆ¶   Velocity_KPæ˜¯Pç³»æ•°,Velocity_KIæ˜¯Iç³»æ•°
+	if (pitch <= -30.0 || pitch >= 30.0)
+		Encoder_Integral = 0;
+	// ç”µæœºå…³é—­åæ¸…é™¤ç§¯åˆ†
 	return velocity;
 }
