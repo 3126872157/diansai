@@ -22,14 +22,14 @@ void Motor_Init(void)
 	motor2.offset = 250;
 	
 	//motor结构体初始化
-	motor1.lastCount = 0;
-    motor1.totalCount = 0;
+	motor1.lastCount = CNT_RESET;
+    motor1.totalCount = CNT_RESET;
     motor1.overflowNum = 0;                                  
     motor1.speed = 0;
     motor1.direct = 0;
 	motor1.distance = 0;
-	motor2.lastCount = 0;
-    motor2.totalCount = 0;
+	motor2.lastCount = CNT_RESET;
+    motor2.totalCount = CNT_RESET;
     motor2.overflowNum = 0;                                  
     motor2.speed = 0;
     motor2.direct = 0;

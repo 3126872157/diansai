@@ -16,11 +16,11 @@ void encoder_get_counter(short *encoder1_counter , short *encoder2_counter)
 
 void anti_overflow(Motor *motor)
 {
-	if(motor->lastCount - motor->totalCount > 32767)						//这个数字有讲究的，得算速度得到，现在先随便给一个
+	if(motor->lastCount - motor->totalCount > 10000)						//这个数字有讲究的，得算速度得到，现在先随便给一个
     {
         motor->overflowNum++;
     }
-    else if(motor1.totalCount - motor1.lastCount > 32797)
+    else if(motor->totalCount - motor->lastCount > 10000)
     {
         motor->overflowNum--;
     }
@@ -32,7 +32,10 @@ void encoder_get_speed(void)
 	motor1.direct = __HAL_TIM_IS_TIM_COUNTING_DOWN(&ENCODER_TIM1);			//如果向上计数（正转），返回值为0，否则返回值为1
 	motor2.direct = __HAL_TIM_IS_TIM_COUNTING_DOWN(&ENCODER_TIM2);
 	
-	//防溢出处理，但是这个小车的霍尔编码器应该不会溢出的
+	motor1.totalCount = COUNTER1 + motor1.overflowNum * RELOADVALUE1;		//一个周期内的总计数值等于目前计数值加上溢出的计数值
+	motor2.totalCount = COUNTER2 + motor2.overflowNum * RELOADVALUE2;
+	
+	//防溢出处理
 	anti_overflow(&motor1);
 	anti_overflow(&motor2);
 	

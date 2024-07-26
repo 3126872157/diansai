@@ -1,7 +1,7 @@
 Dependencies for Project 'diansaixiaoche', Target 'diansaixiaoche': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7
 F (startup_stm32f103xe.s)(0x66A31A75)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include--pd "__UVISION_VERSION SETA 540" --pd "STM32F10X_HD SETA 1" --pd "_RTE_ SETA 1"--list startup_stm32f103xe.lst --xref -o diansaixiaoche\startup_stm32f103xe.o --depend diansaixiaoche\startup_stm32f103xe.d)
-F (../Core/Src/main.c)(0x66A31607)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\main.o --omf_browse diansaixiaoche\main.crf --depend diansaixiaoche\main.d)
+F (../Core/Src/main.c)(0x66A3A1B3)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\main.o --omf_browse diansaixiaoche\main.crf --depend diansaixiaoche\main.d)
 I (../Core/Inc/main.h)(0x66A31A73)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x657EEEA5)
 I (../Core/Inc/stm32f1xx_hal_conf.h)(0x66A30D14)
@@ -695,8 +695,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x657EEEA5)
-F (..\App\Control.c)(0x66A31BB6)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\control.o --omf_browse diansaixiaoche\control.crf --depend diansaixiaoche\control.d)
-I (..\App\encoder.h)(0x66A30D14)
+F (..\App\Control.c)(0x66A3B120)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\control.o --omf_browse diansaixiaoche\control.crf --depend diansaixiaoche\control.d)
+I (..\App\encoder.h)(0x66A3AA26)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x657EEEA4)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x657EEEA4)
 I (../Drivers/CMSIS/Include/core_cm3.h)(0x657EEE74)
@@ -728,13 +728,13 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x657EEEA5)
 I (../Core/Inc/tim.h)(0x66A31605)
 I (../Core/Inc/main.h)(0x66A31A73)
 I (../App/struct_typedef.h)(0x66A30D14)
-I (..\App\pid.h)(0x66A30D14)
+I (..\App\pid.h)(0x66A39B5C)
 I (..\App\motor.h)(0x66A30D14)
 I (..\App\control.h)(0x66A31671)
 I (..\App\sr04.h)(0x66A31BA9)
 F (..\App\Control.h)(0x66A31671)()
-F (..\App\Encoder.c)(0x66A30D14)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\encoder.o --omf_browse diansaixiaoche\encoder.crf --depend diansaixiaoche\encoder.d)
-I (..\App\encoder.h)(0x66A30D14)
+F (..\App\Encoder.c)(0x66A3ADB5)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\encoder.o --omf_browse diansaixiaoche\encoder.crf --depend diansaixiaoche\encoder.d)
+I (..\App\encoder.h)(0x66A3AA26)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x657EEEA4)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x657EEEA4)
 I (../Drivers/CMSIS/Include/core_cm3.h)(0x657EEE74)
@@ -768,8 +768,8 @@ I (../Core/Inc/main.h)(0x66A31A73)
 I (../App/struct_typedef.h)(0x66A30D14)
 I (..\App\motor.h)(0x66A30D14)
 I (..\App\control.h)(0x66A31671)
-F (..\App\Encoder.h)(0x66A30D14)()
-F (..\App\Motor.c)(0x66A30D14)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\motor.o --omf_browse diansaixiaoche\motor.crf --depend diansaixiaoche\motor.d)
+F (..\App\Encoder.h)(0x66A3AA26)()
+F (..\App\Motor.c)(0x66A3AA16)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\motor.o --omf_browse diansaixiaoche\motor.crf --depend diansaixiaoche\motor.d)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x657EEEA4)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x657EEEA4)
 I (../Drivers/CMSIS/Include/core_cm3.h)(0x657EEE74)
@@ -798,14 +798,14 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x657EEEA5)
-I (..\App\encoder.h)(0x66A30D14)
+I (..\App\encoder.h)(0x66A3AA26)
 I (../Core/Inc/tim.h)(0x66A31605)
 I (../Core/Inc/main.h)(0x66A31A73)
 I (../App/struct_typedef.h)(0x66A30D14)
 I (..\App\motor.h)(0x66A30D14)
 F (..\App\Motor.h)(0x66A30D14)()
-F (..\App\PID.c)(0x66A30D14)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\pid.o --omf_browse diansaixiaoche\pid.crf --depend diansaixiaoche\pid.d)
-I (..\App\pid.h)(0x66A30D14)
+F (..\App\PID.c)(0x66A39AC9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\pid.o --omf_browse diansaixiaoche\pid.crf --depend diansaixiaoche\pid.d)
+I (..\App\pid.h)(0x66A39B5C)
 I (..\App\struct_typedef.h)(0x66A30D14)
 I (../Core/Inc/main.h)(0x66A31A73)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x657EEEA5)
@@ -836,9 +836,9 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x657EEEA5)
-F (..\App\PID.h)(0x66A30D14)()
+F (..\App\PID.h)(0x66A39B5C)()
 F (..\App\struct_typedef.h)(0x66A30D14)()
-F (..\App\sr04.c)(0x66A31BA6)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\sr04.o --omf_browse diansaixiaoche\sr04.crf --depend diansaixiaoche\sr04.d)
+F (..\App\sr04.c)(0x66A39BEA)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\sr04.o --omf_browse diansaixiaoche\sr04.crf --depend diansaixiaoche\sr04.d)
 I (..\App\sr04.h)(0x66A31BA9)
 I (..\App\struct_typedef.h)(0x66A30D14)
 I (../Core/Inc/tim.h)(0x66A31605)
@@ -873,3 +873,5 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x657EEEA5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x657EEEA5)
 I (..\App\control.h)(0x66A31671)
 F (..\App\sr04.h)(0x66A31BA9)()
+F (..\App\task.c)(0x66A3B0E0)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../App-I.\RTE\_diansaixiaoche-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\Ken.Liang\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="540" -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o diansaixiaoche\task.o --omf_browse diansaixiaoche\task.crf --depend diansaixiaoche\task.d)
+F (..\App\task.h)(0x66A3B0A6)()

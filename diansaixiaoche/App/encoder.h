@@ -27,7 +27,7 @@
 #define RELOADVALUE1 __HAL_TIM_GetAutoreload(&ENCODER_TIM1) //获取自动装载值,本例中为65535
 #define RELOADVALUE2 __HAL_TIM_GetAutoreload(&ENCODER_TIM2)
 
-#define CNT_RESET 32767
+#define CNT_RESET 5000
 
 void encoder_get_counter(short *encoder1_counter , short *encoder2_counter);
 void encoder_get_speed(void);

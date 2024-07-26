@@ -63,6 +63,8 @@ extern Motor motor1;
 extern Motor motor2;
 extern float target_speed1;
 extern float target_speed2;
+extern float distance_out1;
+extern float distance_out2;
 	
 /* USER CODE END PV */
 
@@ -136,7 +138,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	printf("%f,%f,%f,%f\n", target_speed1, motor1.distance, target_speed2 , motor2.speed);
+	printf("%f,%f,%f,%f\n", distance_out1, motor1.speed, distance_out2 , motor2.speed);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
