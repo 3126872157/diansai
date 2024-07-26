@@ -569,6 +569,16 @@
               <FileType>5</FileType>
               <FilePath>..\App\struct_typedef.h</FilePath>
             </File>
+            <File>
+              <FileName>sr04.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\sr04.c</FilePath>
+            </File>
+            <File>
+              <FileName>sr04.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\App\sr04.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

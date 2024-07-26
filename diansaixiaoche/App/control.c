@@ -5,6 +5,7 @@
 //#include "MPU6050.h"
 #include "main.h"
 #include "pid.h"
+#include "sr04.h"
 
 pid_type_def speed_pid;
 pid_type_def distance_pid;
@@ -44,6 +45,7 @@ float velocity_pwm;
 void control_init(void)
 {
 	Motor_Init();
+	sr04_init();
 	my_pid_init(&speed_pid, &distance_pid, 8000, 10000, 5000, 10000);		//∫Û√Ê¡Ω∏ˆ≤Œ ˝ «pwmœﬁ∑˘∫Õª˝∑÷œﬁ∑˘
 }
 
@@ -63,11 +65,11 @@ void emergency_shut_motor()
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)						//∂® ±∆˜ªÿµ˜∫Ø ˝£¨”√”⁄º∆À„ÀŸ∂»∫ÕPIDº∆À„
 {	
-    if(htim->Instance==GAP_TIM.Instance)										//º‰∏Ù∂® ±∆˜÷–∂œ£¨ « ±∫Úº∆À„ÀŸ∂»¡À
+    if(htim->Instance == GAP_TIM.Instance)										//º‰∏Ù∂® ±∆˜÷–∂œ£¨ « ±∫Úº∆À„ÀŸ∂»¡À
     {
 		//∂¡»°Õ”¬›“«◊ÀÃ¨∫ÕΩ«º”ÀŸ∂»
 //		if(MPU6050_DMP_Get_Data(&pitch,&roll,&yaw,&gyro)){}						//pitch : x ; yaw : y ; roll : z
-			
+		
 		//≤‚ÀŸ
 		encoder_get_speed();
 		
@@ -81,6 +83,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)						//∂® ±∆˜ªÿµ˜∫Ø 
 		motor2_out = PID_calc(&speed_pid, motor2.speed, distance_out2);
 		
 		//pwm ‰≥ˆ
-		setPWM(motor1_out, motor2_out);
+		//setPWM(motor1_out, motor2_out);
+	}
+	
+	if(htim->Instance == SENSOR_TIM.Instance)
+	{
+		TRIG_ON;
+		delay_us(15); 	//≥÷–¯÷¡…Ÿ10us
+		TRIG_OFF;
+		
+		__HAL_TIM_SET_CAPTUREPOLARITY(&SR04_TIM,TIM_CHANNEL_1,TIM_ICPOLARITY_RISING);
+		HAL_TIM_IC_Start_IT(&SR04_TIM,TIM_CHANNEL_1);
+
 	}
 }
