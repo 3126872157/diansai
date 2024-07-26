@@ -21,9 +21,10 @@ float Velocity_ki = 0.2;
 
 //调试用，pid三个参数
 float k1[3] = {1500, 250, 5};	//速度环
-float k2[3] = {0, 0, 0};		//位置环
+float k2[3] = {0.06, 0, 0};		//位置环
 //!
 float k3[3] = {0, 0, 0};		//巡线环
+
 
 
 float zhongzhi = -0.5;

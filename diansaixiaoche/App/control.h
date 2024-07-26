@@ -7,6 +7,7 @@
 #define LINE_SPEED_C RADIUS_OF_TYRE * 2 * 3.142				//一圈走的路程
 #define GAP_FREQ 100										//gap定时器频率
 #define ENCODER_MODE 4										//编码器计数模式，即倍频数
+#define SR04_FREQ 70										//传感器数据定时采集的定时器
 
 void control_init(void);
 

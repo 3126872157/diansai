@@ -5,6 +5,7 @@
 //#include "MPU6050.h"
 #include "main.h"
 #include "pid.h"
+#include "sr04.h"
 
 pid_type_def speed_pid;
 pid_type_def distance_pid;
@@ -51,7 +52,12 @@ float velocity_pwm;
 void control_init(void)
 {
 	Motor_Init();
+<<<<<<< HEAD
 	my_pid_init(&speed_pid, &distance_pid, &follow_line_pid, 8000, 10000, 5000, 10000,5000, 10000);		//∫Û√Ê¡Ω∏ˆ≤Œ ˝ «pwmœﬁ∑˘∫Õª˝∑÷œﬁ∑˘
+=======
+	sr04_init();
+	my_pid_init(&speed_pid, &distance_pid, 8000, 10000, 5000, 10000);		//∫Û√Ê¡Ω∏ˆ≤Œ ˝ «pwmœﬁ∑˘∫Õª˝∑÷œﬁ∑˘
+>>>>>>> 894fd29939b9bb984c758d8b9ed71fc9cb56d669
 }
 
 void emergency_shut_motor()
@@ -70,11 +76,11 @@ void emergency_shut_motor()
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)						//∂® ±∆˜ªÿµ˜∫Ø ˝£¨”√”⁄º∆À„ÀŸ∂»∫ÕPIDº∆À„
 {	
-    if(htim->Instance==GAP_TIM.Instance)										//º‰∏Ù∂® ±∆˜÷–∂œ£¨ « ±∫Úº∆À„ÀŸ∂»¡À
+    if(htim->Instance == GAP_TIM.Instance)										//º‰∏Ù∂® ±∆˜÷–∂œ£¨ « ±∫Úº∆À„ÀŸ∂»¡À
     {
 		//∂¡»°Õ”¬›“«◊ÀÃ¨∫ÕΩ«º”ÀŸ∂»
 //		if(MPU6050_DMP_Get_Data(&pitch,&roll,&yaw,&gyro)){}						//pitch : x ; yaw : y ; roll : z
-			
+		
 		//≤‚ÀŸ
 		encoder_get_speed();
 		
@@ -91,5 +97,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)						//∂® ±∆˜ªÿµ˜∫Ø 
 		follow_line_turn_out = PID_calc(&follow_line_pid, openmv_receive[DELTA_X], follow_line_target);
 		//pwm ‰≥ˆ
 		setPWM(motor1_out-follow_line_turn_out, motor2_out+follow_line_turn_out);
+	}
+	
+	if(htim->Instance == SENSOR_TIM.Instance)
+	{
+		TRIG_ON;
+		delay_us(15); 	//≥÷–¯÷¡…Ÿ10us
+		TRIG_OFF;
+		
+		__HAL_TIM_SET_CAPTUREPOLARITY(&SR04_TIM,TIM_CHANNEL_1,TIM_ICPOLARITY_RISING);
+		HAL_TIM_IC_Start_IT(&SR04_TIM,TIM_CHANNEL_1);
+
 	}
 }
