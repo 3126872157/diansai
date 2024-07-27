@@ -36,3 +36,4 @@ diansaixiaoche\control.o: ..\App\pid.h
 diansaixiaoche\control.o: ..\App\motor.h
 diansaixiaoche\control.o: ..\App\control.h
 diansaixiaoche\control.o: ..\App\sr04.h
+diansaixiaoche\control.o: ..\App\task.h

@@ -6,12 +6,16 @@
 #include "main.h"
 #include "pid.h"
 #include "sr04.h"
+#include "task.h"
 
+//pid½á¹¹Ìå
 pid_type_def speed_pid;
 pid_type_def distance_pid;
+pid_type_def follow_line_pid;
 
 extern Motor motor1;
 extern Motor motor2;
+extern Car car;
 
 int result;		//ÍÓÂİÒÇ³õÊ¼»¯½á¹û
 float pitch;	//Èı¸ö½Ç¶È
@@ -28,6 +32,9 @@ extern float target_speed2;
 float max_speed_error = 1;	//Ä¿±êËÙ¶ÈºÍÊµ¼ÊËÙ¶È×î´ó²îÖµ
 float slow_start_k = 0.1;	//»ºÆğÏµÊı
 
+//Ñ²Ïß»·Ä¿±ê
+float follow_line_target = 0;
+
 //µ¥Î»ÊÇrpm
 float motor1_speed;		//motor1ÎªÓÒµç»ú£¬ÏòÇ°speedÎª+
 float motor2_speed;		//motor2Îª×óµç»ú£¬ÏòÇ°speedÎª-
@@ -37,6 +44,7 @@ float distance_out1;
 float distance_out2;
 float motor1_out;
 float motor2_out;
+float follow_line_turn_out;		//Ñ²Ïß»·pidÊä³ö
 
 //¼¸ÖÖpwm
 float vertical_pwm;
@@ -45,8 +53,9 @@ float velocity_pwm;
 void control_init(void)
 {
 	Motor_Init();
+	my_pid_init(&speed_pid, &distance_pid, &follow_line_pid, 8000, 10000, 5000, 10000,5000, 10000);		//ºóÃæÁ½¸ö²ÎÊıÊÇpwmÏŞ·ùºÍ»ı·ÖÏŞ·ù
 	sr04_init();
-	my_pid_init(&speed_pid, &distance_pid, 4000, 10000, 5000, 10000);		//ºóÃæÁ½¸ö²ÎÊıÊÇpwmÏŞ·ùºÍ»ı·ÖÏŞ·ù
+
 }
 
 void emergency_shut_motor()
@@ -75,27 +84,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)						//¶¨Ê±Æ÷»Øµ÷º¯Ê
 		encoder_get_speed();
 		
 		//·À³é·ç
-//		emergency_shut_motor();
+		emergency_shut_motor();
 		
-		//´®¼¶ËÙ¶ÈÎ»ÖÃpid»·
-		distance_out1 = PID_calc(&distance_pid, motor1.distance, target_distance);
-		distance_out2 = PID_calc(&distance_pid, motor2.distance, target_distance);
+		//ÉèÖÃ³µ³µµÄÄ£Ê½mode£¬Ä£Ê½×ª»»Îªµ×ÅÌĞĞÎª
+		car_chassis_set(&car);
 		
-		//»ºÆğ
-		if(distance_out1 - motor1.speed > max_speed_error)
-		{
-			distance_out1 = motor1.speed + (distance_out1 - motor1.speed) * slow_start_k;
-		}
-		if(distance_out2 - motor2.speed > max_speed_error)
-		{
-			distance_out2 = motor2.speed + (distance_out2 - motor2.speed) * slow_start_k;
-		}
-		
-		motor1_out = PID_calc(&speed_pid, motor1.speed, distance_out1);
-		motor2_out = PID_calc(&speed_pid, motor2.speed, distance_out2);
+		//ÉèÖÃ³µµÄ¿ØÖÆ±äÁ¿
+		task_set_control(&car);
 		
 		//pwmÊä³ö
 		setPWM(motor1_out, motor2_out);
+
 	}
 	
 	//´«¸ĞÆ÷Ïà¹Ø¿ØÖÆ
