@@ -3,6 +3,7 @@
 #include "pid.h"
 #include "motor.h"
 #include "control.h"
+#include "openmv.h"
 
 float target_distance;
 float target_speed1 = 0;

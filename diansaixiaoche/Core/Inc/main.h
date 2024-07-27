@@ -36,15 +36,12 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-enum {
-    DELTA_X,
-    DELTA_Y
-};
+
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-extern uint8_t openmv_receive[2];
+
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

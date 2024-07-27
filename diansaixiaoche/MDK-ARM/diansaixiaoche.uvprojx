@@ -589,6 +589,16 @@
               <FileType>5</FileType>
               <FilePath>..\App\task.h</FilePath>
             </File>
+            <File>
+              <FileName>openmv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\openmv.c</FilePath>
+            </File>
+            <File>
+              <FileName>openmv.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\App\openmv.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
