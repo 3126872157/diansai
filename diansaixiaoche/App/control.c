@@ -7,6 +7,7 @@
 #include "pid.h"
 #include "sr04.h"
 #include "task.h"
+#include "openmv.h"
 
 //pid结构体
 pid_type_def speed_pid;
@@ -29,8 +30,8 @@ extern float target_speed1;
 extern float target_speed2;
 
 //缓起相关
-float max_speed_error = 1;	//目标速度和实际速度最大差值
-float slow_start_k = 0.1;	//缓起系数
+float max_speed_error = 1.5;	//目标速度和实际速度最大差值
+float slow_start_k = 0.25;		//缓起系数
 
 //巡线环目标
 float follow_line_target = 0;
@@ -55,7 +56,7 @@ void control_init(void)
 	Motor_Init();
 	my_pid_init(&speed_pid, &distance_pid, &follow_line_pid, 8000, 10000, 5000, 10000,5000, 10000);		//后面两个参数是pwm限幅和积分限幅
 	sr04_init();
-
+	openmv_init();
 }
 
 void emergency_shut_motor()

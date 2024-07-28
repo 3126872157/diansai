@@ -133,7 +133,6 @@ int main(void)
 
 	//≥ı ºªØ
 	control_init();
-	openmv_init();
   
   /* USER CODE END 2 */
 

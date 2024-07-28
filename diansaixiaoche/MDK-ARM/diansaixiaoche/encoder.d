@@ -3,7 +3,7 @@ diansaixiaoche\encoder.o: ..\App\encoder.h
 diansaixiaoche\encoder.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
 diansaixiaoche\encoder.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h
 diansaixiaoche\encoder.o: ../Drivers/CMSIS/Include/core_cm3.h
-diansaixiaoche\encoder.o: E:\Software\keil5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+diansaixiaoche\encoder.o: C:\Users\Ken.Liang\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 diansaixiaoche\encoder.o: ../Drivers/CMSIS/Include/cmsis_version.h
 diansaixiaoche\encoder.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 diansaixiaoche\encoder.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -14,7 +14,7 @@ diansaixiaoche\encoder.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.
 diansaixiaoche\encoder.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h
 diansaixiaoche\encoder.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
 diansaixiaoche\encoder.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-diansaixiaoche\encoder.o: E:\Software\keil5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
+diansaixiaoche\encoder.o: C:\Users\Ken.Liang\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 diansaixiaoche\encoder.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h
 diansaixiaoche\encoder.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h
 diansaixiaoche\encoder.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h

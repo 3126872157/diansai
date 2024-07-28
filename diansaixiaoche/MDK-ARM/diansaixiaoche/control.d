@@ -3,7 +3,7 @@ diansaixiaoche\control.o: ..\App\encoder.h
 diansaixiaoche\control.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
 diansaixiaoche\control.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h
 diansaixiaoche\control.o: ../Drivers/CMSIS/Include/core_cm3.h
-diansaixiaoche\control.o: E:\Software\keil5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+diansaixiaoche\control.o: C:\Users\Ken.Liang\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 diansaixiaoche\control.o: ../Drivers/CMSIS/Include/cmsis_version.h
 diansaixiaoche\control.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 diansaixiaoche\control.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -14,7 +14,7 @@ diansaixiaoche\control.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.
 diansaixiaoche\control.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h
 diansaixiaoche\control.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
 diansaixiaoche\control.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-diansaixiaoche\control.o: E:\Software\keil5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
+diansaixiaoche\control.o: C:\Users\Ken.Liang\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 diansaixiaoche\control.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h
 diansaixiaoche\control.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h
 diansaixiaoche\control.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h
@@ -37,3 +37,6 @@ diansaixiaoche\control.o: ..\App\motor.h
 diansaixiaoche\control.o: ..\App\control.h
 diansaixiaoche\control.o: ..\App\sr04.h
 diansaixiaoche\control.o: ..\App\task.h
+diansaixiaoche\control.o: ..\App\openmv.h
+diansaixiaoche\control.o: C:\Users\Ken.Liang\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+diansaixiaoche\control.o: ../Core/Inc/usart.h
