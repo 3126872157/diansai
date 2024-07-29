@@ -16,7 +16,13 @@ real_edge_rect_corners=((standard_edge_rect_corners[0][0],standard_edge_rect_cor
 #现在的边框四个角的坐标
 #1 2
 #4 3
+class block:
+    def __init__(self, x=0, y=0, value=0):
+        self.x = x
+        self.y = y
+        self.value=value
 
+blocks=[]
 block_1_center=None
 block_2_center=None
 block_3_center=None
@@ -33,7 +39,7 @@ block_9_center=None
 import sensor, image, cmath
 
 
-def reset_standard_edge_rect():#调试参数edge_rect_corners
+def show_edge_rect():#调试参数edge_rect_corners
     while(True):
         img = sensor.snapshot()
         img.lens_corr(lens_corr_threshold)
@@ -141,6 +147,13 @@ def renew_real_edge_rect_corners():
                             rotate_point(standard_edge_rect_corners[1][0],standard_edge_rect_corners[1][1],rect_theta),
                             rotate_point(standard_edge_rect_corners[0][0],standard_edge_rect_corners[1][1],rect_theta))
 
+def color_recognition():
+    img = sensor.snapshot()
+    img.lens_corr(lens_corr_threshold)
+    img.binary([black_threshold])
+    #if img.get_pixel(block_1_center[0],block_1_center[1])==(255,255,255):
+
+        
 sensor.reset()
 #sensor.set_auto_gain(False) # 关闭自动自动增益。默认开启的，在颜色识别中，一定要关闭白平衡。
 #sensor.set_auto_whitebal(False)
@@ -148,10 +161,10 @@ sensor.set_framesize(sensor.QVGA)#修改此处还需修改3，4，132，133…�
 sensor.set_pixformat(sensor.RGB565)
 
 while(True):
-    
-    #reset_standard_edge_rect()#取消注释以调试参数edge_rect_corners
+    #show_edge_rect()#取消注释以调试参数edge_rect_corners
     #rect_theta=find_theta()#需要旋转再取消注释
+    #test_theta()#取消注释以观察theta值，请先find_theta()
     renew_real_edge_rect_corners()
     renew_block()
-    reset_standard_edge_rect()
+    
     
