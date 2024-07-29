@@ -1,7 +1,7 @@
 #注意事项：
 #1.调试参数都在下面，需要调试的参数都在注释中标明
 #2.旋转棋盘请幅度大一点，45度左右最佳
-#3.OpenMV4 H7 Plus的UART(3)是P4-TX P5-RX
+#3.OpenMV4 H7 Plus的UART(3)是P4-TX P5-RX 波特率为115200
 #4.串口发送1/2.1:更新棋子状态2:更新棋盘状态(！！！！！仅在要旋转棋盘时使用！！！！！)
 #需要调试的参数---------------------------------------------------------------------------------------------------------
 lens_corr_threshold = 1.3                               # 畸变矫正参数调高方形四角变尖，调低方形变圆
@@ -10,6 +10,7 @@ standard_edge_rect_length = 75                          # 标准边框边长的�
 background_color_threshold = (0,0,0,0,0,0)              # 背景颜色阈值(不重要，没用上)    背景value为0
 black_chess_threshold = (0, 30, -50, 50, -50, 50)       # 黑棋阈值                      黑子value为1
 white_chess_threshold = (70, 100, -50, 50, -50, 50)     # 白棋阈值                      白子value为-1
+show_continually = False                                    # 是否卡死在show_board()里,调试standard_edge_rect_length时请打开
 #----------------------------------------------------------------------------------------------------------------------
 
 import sensor
@@ -36,6 +37,8 @@ uart = pyb.UART(3, 115200, timeout_char = 1000)
 
 blocks = [Block() for _ in range(9)]
 block_centers = [None] * 9  # 初始化为None
+data = [0]*10
+x = 0
 
 ########串口发送数据函数处理#########
 def UartSendDate(data):
@@ -48,10 +51,10 @@ def UartSendDate(data):
 ########串口发送数据函数处理完毕#############
 ########串口接收数据函数处理#########
 def UartReceiveDate():  #这个函数不能运行太快，否则会导致串口读取太快导致出错
-    global Find_Task
-    global Target_Num
-    global x=0
+    global x
     global data
+    global mode
+    
     data[0] = uart.readchar()
     data[1] = uart.readchar()
     data[2] = uart.readchar()
@@ -63,7 +66,7 @@ def UartReceiveDate():  #这个函数不能运行太快，否则会导致串口�
     data[8] = uart.readchar()
     data[9] = uart.readchar()
     if data[x+3] == 0x43 and data[x+4] == 0x4B and data[x] == 0x59 and data[x+1] == 0x46 and x < 6:
-        mode =  data[x+2]
+        mode =  data[x+2]-48
     elif x >= 6: x = 0
     x+=1
 ########串口接收数据函数处理完毕#############
@@ -107,12 +110,22 @@ def renew_board():
                              int((block_centers[6].y + block_centers[8].y) / 2))
 
 def show_board():
-    while (True):
-        img = sensor.snapshot()
-        img.lens_corr(lens_corr_threshold)
-        img.binary([black_threshold])
-        img.invert()
-        img.bilateral(1, color_sigma=1, space_sigma=1)
+    img=sensor.snapshot()
+    # img.lens_corr(lens_corr_threshold)
+    # img.binary([black_threshold])
+    # img.invert()
+    # img.bilateral(1, color_sigma=1, space_sigma=1)
+    img.draw_rectangle(standard_edge_rect_corners[0][0],standard_edge_rect_corners[0][1],standard_edge_rect_corners[1][0]-standard_edge_rect_corners[0][0],standard_edge_rect_corners[1][1]-standard_edge_rect_corners[0][1],color=(255,0,0))
+    for i in range(9):
+        if block_centers[i] is not None:
+            img.draw_circle(block_centers[i].x, block_centers[i].y, 9, color=(((block_centers[i].value)+1)*126, ((block_centers[i].value)+1)*126, ((block_centers[i].value)+1)*126),thickness=3)
+    while (show_continually):
+        img=sensor.snapshot()
+        # img = sensor.snapshot()
+        # img.lens_corr(lens_corr_threshold)
+        # img.binary([black_threshold])
+        # img.invert()
+        # img.bilateral(1, color_sigma=1, space_sigma=1)
         img.draw_rectangle(standard_edge_rect_corners[0][0],standard_edge_rect_corners[0][1],standard_edge_rect_corners[1][0]-standard_edge_rect_corners[0][0],standard_edge_rect_corners[1][1]-standard_edge_rect_corners[0][1],color=(255,0,0))
         for i in range(9):
             if block_centers[i] is not None:
@@ -173,7 +186,7 @@ def color_recognition():
             for k in range(-5,5):
                 if black_chess_map.get_pixel(block_centers[i].x+j, block_centers[i].y+k)==1:
                     trust_value+=1
-        print("black_chess_value_%d:%d" % (i,trust_value))
+        #print("black_chess_value_%d:%d" % (i,trust_value))
         if trust_value>90:
             block_centers[i].value=1
     del black_chess_map
@@ -184,10 +197,11 @@ def color_recognition():
             for k in range(-5,5):
                 if white_chess_map.get_pixel(block_centers[i].x+j, block_centers[i].y+k)==1:
                     trust_value+=1
-        print("white_chess_value_%d:%d" % (i,trust_value))
+        #print("white_chess_value_%d:%d" % (i,trust_value))
         if trust_value>90:
             block_centers[i].value=-1
     del white_chess_map
+    
 
 def init_mode_choose():
     while(mode==0):
@@ -200,10 +214,11 @@ sensor.set_pixformat(sensor.RGB565)
 
 
 while(True):
-    mode=0#等待选择模式,1:更新棋子状态2:更新棋盘状态(！！！！！仅在要旋转棋盘时使用！！！！！)
+    #show_board()#取消注释以调试参数edge_rect_corners
+    mode=1#等待选择模式,1:更新棋子状态2:更新棋盘状态(！！！！！仅在要旋转棋盘时使用！！！！！)
     init_mode_choose()#用串口启动
     renew_board()#初始化棋盘
-    #show_board()#取消注释以调试参数edge_rect_corners
+    
     if mode== 2:
         rect_theta=find_theta()
         renew_board()
@@ -214,6 +229,7 @@ while(True):
     #test_theta()#取消注释以观察theta值，请先find_theta()
     if mode==1:
         color_recognition()#请先renew_block()
+        show_board()#取消注释以调试参数
         UartSendDate([block_centers[0].value,block_centers[1].value,block_centers[2].value,
                       block_centers[3].value,block_centers[4].value,block_centers[5].value,
                       block_centers[6].value,block_centers[7].value,block_centers[8].value])#格子状态
