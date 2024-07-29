@@ -3,13 +3,14 @@ import cmath
 import sensor,pyb
 from pyb import Pin, Timer
 #需要调试的参数---------------------------------------------------
-lens_corr_threshold = 1.3  # 畸变矫正参数
-black_threshold = (0, 55, -50, 50, -50, 50)  # 边框颜色阈值
+lens_corr_threshold = 1.3  # 畸变矫正参数调高方形四角变尖，调低方形变圆
+black_threshold = (0, 55, -50, 50, -50, 50)  # 边框颜色阈值，调第二位（现在是55），调高识别更宽松，调低识别更严格
 standard_edge_rect_length = 75  # 标准边框边长的一半
 background_color_threshold = (0,0,0,0,0,0)  # 背景颜色阈值(不重要，没用上)    背景value为0
 black_chess_threshold = (0, 30, -50, 50, -50, 50)  # 黑棋阈值               黑子value为1
 white_chess_threshold = (70, 100, -50, 50, -50, 50)  # 白棋阈值             白子value为-1
 #----------------------------------------------------------------
+
 standard_edge_rect_corners = ((160 - standard_edge_rect_length, 120 - standard_edge_rect_length),
                              (160 + standard_edge_rect_length, 120 + standard_edge_rect_length))  # 标准边框左上，右下角的坐标
 rect_theta = 0  # 现在的边框的斜度
@@ -40,6 +41,27 @@ def UartSendDate(data):
     uart.write(sendData)
     print(sendData)
 ########串口发送数据函数处理完毕#############
+########串口接收数据函数处理#########
+def UartReceiveDate():  #这个函数不能运行太快，否则会导致串口读取太快导致出错
+    global Find_Task
+    global Target_Num
+    global x=0
+    global data
+    data[0] = uart.readchar()
+    data[1] = uart.readchar()
+    data[2] = uart.readchar()
+    data[3] = uart.readchar()
+    data[4] = uart.readchar()
+    data[5] = uart.readchar()
+    data[6] = uart.readchar()
+    data[7] = uart.readchar()
+    data[8] = uart.readchar()
+    data[9] = uart.readchar()
+    if data[x+3] == 0x43 and data[x+4] == 0x4B and data[x] == 0x59 and data[x+1] == 0x46 and x < 6:
+        mode =  data[x+2]
+    elif x >= 6: x = 0
+    x+=1
+########串口接收数据函数处理完毕#############
 def rotate_point(x, y, angle):
     x -= 320 / 2
     y -= 240 / 2
@@ -158,21 +180,28 @@ def color_recognition():
             block_centers[i].value=-1
     del white_chess_map
 
+def init_mode_choose():
+    while(mode==0):
+        pass
 
 
 sensor.reset()
 sensor.set_framesize(sensor.QVGA)
 sensor.set_pixformat(sensor.RGB565)
 
+mode=0#等待选择模式,1:不旋转2:旋转
+
 while(True):
+    init_mode_choose()#用串口启动
     #show_edge_rect()#取消注释以调试参数edge_rect_corners
-    #rect_theta=find_theta()#需要旋转再取消注释
+    if mode== 2:rect_theta=find_theta()#需要旋转再取消注释
     #test_theta()#取消注释以观察theta值，请先find_theta()
-    renew_real_edge_rect_corners()
-    renew_block()
-    color_recognition()#请先renew_block()
-    show_edge_rect()#请先color_recognition()
-    UartSendDate([real_edge_rect_corners[0][0],real_edge_rect_corners[0][1],real_edge_rect_corners[1][0],real_edge_rect_corners[1][1],
-                  real_edge_rect_corners[2][0],real_edge_rect_corners[2][1],real_edge_rect_corners[3][0],real_edge_rect_corners[3][1],#边框坐标
-                  block_centers[0].value,block_centers[1].value,block_centers[2].value,block_centers[3].value,
-                  block_centers[4].value,block_centers[5].value,block_centers[6].value,block_centers[7].value,block_centers[8].value])#格子状态
+    if mode!=0:
+        renew_real_edge_rect_corners()
+        renew_block()
+        color_recognition()#请先renew_block()
+        show_edge_rect()#请先color_recognition()
+        UartSendDate([real_edge_rect_corners[0][0],real_edge_rect_corners[0][1],real_edge_rect_corners[1][0],real_edge_rect_corners[1][1],
+                    real_edge_rect_corners[2][0],real_edge_rect_corners[2][1],real_edge_rect_corners[3][0],real_edge_rect_corners[3][1],#边框坐标
+                    block_centers[0].value,block_centers[1].value,block_centers[2].value,block_centers[3].value,
+                    block_centers[4].value,block_centers[5].value,block_centers[6].value,block_centers[7].value,block_centers[8].value])#格子状态
