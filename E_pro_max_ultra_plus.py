@@ -37,7 +37,6 @@ uart = pyb.UART(3, 115200, timeout_char = 1000)
 blocks = [Block() for _ in range(9)]
 block_centers = [None] * 9  # 初始化为None
 data = [0]*10
-x = 0
 
 ########串口发送数据函数处理#########
 def UartSendDate(data):
@@ -53,7 +52,6 @@ def UartSendDate(data):
 ########串口发送数据函数处理完毕#############
 ########串口接收数据函数处理#########
 def UartReceiveDate():  #这个函数不能运行太快，否则会导致串口读取太快导致出错
-    global x
     global data
     global mode
 
@@ -67,11 +65,9 @@ def UartReceiveDate():  #这个函数不能运行太快，否则会导致串口�
     data[7] = uart.readchar()
     data[8] = uart.readchar()
     data[9] = uart.readchar()
-    if data[x+3] == 0x43 and data[x+4] == 0x4B and data[x] == 0x59 and data[x+1] == 0x46 and x < 6:
-        UartSendDate([0x11])
-        mode =  data[x+2]-48
-    elif x >= 6: x = 0
-    x+=1
+    for x in range(6):
+        if data[(x+3)%10] == 0x43 and data[(x+4)%10] == 0x4B and data[x%10] == 0x59 and data[(x+1)%10] == 0x46:
+            mode =  data[(x+2)%10]-48
 ########串口接收数据函数处理完毕#############
 def rotate_point(x, y, angle):
     x -= 320 / 2
@@ -216,10 +212,10 @@ def color_recognition():
 
 
 def init_mode_choose():
-    while(mode==0):
+    while(mode!=1 and mode !=2):
         UartSendDate([0x00])
         UartReceiveDate()
-        pyb.delay(1000)
+        pyb.delay(100)
 
 
 sensor.reset()
@@ -229,11 +225,10 @@ sensor.set_windowing(160,120,320,240)
 
 #show_board()#取消注释以调试参数edge_rect_corners
 mode=0#等待选择模式,1:更新棋子状态2:更新棋盘状态(！！！！！仅在要旋转棋盘时使用！！！！！)
-init_mode_choose()#用串口启动
-UartSendDate([mode])#发送模式选择模式
 renew_board()#初始化棋盘
-
 while(True):
+    init_mode_choose()#用串口启动
+    #UartSendDate([mode])#发送模式选择模式
     if mode== 2:
         rect_theta=find_theta()
         renew_board()
@@ -245,10 +240,14 @@ while(True):
                           block_centers[4].x,block_centers[4].y,block_centers[5].x,block_centers[5].y,
                           block_centers[6].x,block_centers[6].y,block_centers[7].x,block_centers[7].y,
                           block_centers[8].x,block_centers[8].y])#棋盘格子中心坐标
+            UartReceiveDate()
+            pyb.delay(100)
     #test_theta()#取消注释以观察theta值，请先find_theta()
-    if mode==1:
+    while(mode==1):
         color_recognition()#请先renew_block()
         #show_board()#取消注释以调试参数
         UartSendDate([mode,block_centers[0].value,block_centers[1].value,block_centers[2].value,
                       block_centers[3].value,block_centers[4].value,block_centers[5].value,
                       block_centers[6].value,block_centers[7].value,block_centers[8].value])#格子状态
+        UartReceiveDate()
+        pyb.delay(100)
