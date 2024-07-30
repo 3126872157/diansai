@@ -10,7 +10,7 @@ standard_edge_rect_length = 82                          # 标准边框边长的�
 background_color_threshold = (0,0,0,0,0,0)              # 背景颜色阈值(不重要，没用上)    背景value为0
 black_chess_threshold = (0, 30, -50, 50, -50, 50)       # 黑棋阈值                      黑子value为1
 white_chess_threshold = (70, 100, -50, 50, -50, 50)     # 白棋阈值                      白子value为-1
-show_continually = True                                    # 是否卡死在show_board()里,调试standard_edge_rect_length时请打开
+show_continually = False                                    # 是否卡死在show_board()里,调试standard_edge_rect_length时请打开
 #----------------------------------------------------------------------------------------------------------------------
 import sensor
 import cmath
@@ -66,7 +66,7 @@ def UartReceiveDate():  #这个函数不能运行太快，否则会导致串口�
     data[8] = uart.readchar()
     data[9] = uart.readchar()
     for x in range(6):
-        if data[(x+3)%10] == 0x43 and data[(x+4)%10] == 0x4B and data[x%10] == 0x59 and data[(x+1)%10] == 0x46:
+        if data[(x)%10] == 0x43 and data[(x+1)%10] == 0x4B and data[(x+3)%10] == 0x59 and data[(x+4)%10] == 0x46:
             mode =  data[(x+2)%10]-48
 ########串口接收数据函数处理完毕#############
 def rotate_point(x, y, angle):
@@ -114,24 +114,43 @@ def show_board():
     # img.binary([black_threshold])
     # img.invert()
     # img.bilateral(1, color_sigma=1, space_sigma=1)
-    img.draw_rectangle(standard_edge_rect_corners[0][0],standard_edge_rect_corners[0][1],standard_edge_rect_corners[1][0]-standard_edge_rect_corners[0][0],standard_edge_rect_corners[1][1]-standard_edge_rect_corners[0][1],color=(255,0,0))
+    img.draw_rectangle(standard_edge_rect_corners[0][0],standard_edge_rect_corners[0][1],
+                       standard_edge_rect_corners[1][0]-standard_edge_rect_corners[0][0],
+                       standard_edge_rect_corners[1][1]-standard_edge_rect_corners[0][1],color=(255,0,0))
+    for i in range(0, len(real_edge_rect_corners) - 1):
+        img.draw_line(int(real_edge_rect_corners[i][0]),int( real_edge_rect_corners[i][1]),
+                      int(real_edge_rect_corners[i + 1][0]), int(real_edge_rect_corners[i + 1][1]),
+                      color=(255, 0, 0))  # 红色线条
+
+    # 画出矩形的最后一个边
+    img.draw_line(int(real_edge_rect_corners[-1][0]), int(real_edge_rect_corners[-1][1]),
+                  int(real_edge_rect_corners[0][0]), int(real_edge_rect_corners[0][1]),
+                  color=(255, 0, 0))  # 红色线条
     for i in range(9):
         if block_centers[i] is not None:
             img.draw_circle(block_centers[i].x, block_centers[i].y, 9, color=(((block_centers[i].value)+1)*126, ((block_centers[i].value)+1)*126, ((block_centers[i].value)+1)*126),thickness=3)
     while (show_continually):
         img=sensor.snapshot()
-        # img = sensor.snapshot()
-        # img.lens_corr(lens_corr_threshold)
-        # img.binary([black_threshold])
-        # img.invert()
-        # img.bilateral(1, color_sigma=1, space_sigma=1)
-        img.draw_rectangle(standard_edge_rect_corners[0][0],standard_edge_rect_corners[0][1],standard_edge_rect_corners[1][0]-standard_edge_rect_corners[0][0],standard_edge_rect_corners[1][1]-standard_edge_rect_corners[0][1],color=(255,0,0))
-        img.draw_circle(int((standard_edge_rect_corners[0][0]+standard_edge_rect_corners[1][0])/2),int((standard_edge_rect_corners[0][1]+standard_edge_rect_corners[1][1])/2),3,color=(255,0,0))
-        for i in range(9):
-            if block_centers[i] is not None:
-                img.draw_circle(block_centers[i].x, block_centers[i].y, 9, color=(((block_centers[i].value)+1)*126, ((block_centers[i].value)+1)*126, ((block_centers[i].value)+1)*126),thickness=3)
+    img.lens_corr(lens_corr_threshold)
+    # img.binary([black_threshold])
+    # img.invert()
+    # img.bilateral(1, color_sigma=1, space_sigma=1)
+    img.draw_rectangle(standard_edge_rect_corners[0][0],standard_edge_rect_corners[0][1],
+                       standard_edge_rect_corners[1][0]-standard_edge_rect_corners[0][0],
+                       standard_edge_rect_corners[1][1]-standard_edge_rect_corners[0][1],color=(255,0,0))
+    for i in range(0, len(real_edge_rect_corners) - 1):
+        img.draw_line(int(real_edge_rect_corners[i][0]),int( real_edge_rect_corners[i][1]),
+                      int(real_edge_rect_corners[i + 1][0]), int(real_edge_rect_corners[i + 1][1]),
+                      color=(255, 0, 0))  # 红色线条
 
-
+    # 画出矩形的最后一个边
+    img.draw_line(int(real_edge_rect_corners[-1][0]), int(real_edge_rect_corners[-1][1]),
+                  int(real_edge_rect_corners[0][0]), int(real_edge_rect_corners[0][1]),
+                  color=(255, 0, 0))  # 红色线条
+    for i in range(9):
+        if block_centers[i] is not None:
+            img.draw_circle(block_centers[i].x, block_centers[i].y, 9, color=(((block_centers[i].value)+1)*126, ((block_centers[i].value)+1)*126, ((block_centers[i].value)+1)*126),thickness=3)
+    
 def find_theta():
     kernel_size = 1 # 3x3==1, 5x5==2, 7x7==3, etc.
     kernel = [-2, -1,  0, \
@@ -214,7 +233,7 @@ def color_recognition():
 def init_mode_choose():
     while(mode!=1 and mode !=2):
         UartSendDate([0x00])
-        UartReceiveDate()
+        #UartReceiveDate()
         pyb.delay(100)
 
 
@@ -240,6 +259,7 @@ while(True):
                           block_centers[4].x,block_centers[4].y,block_centers[5].x,block_centers[5].y,
                           block_centers[6].x,block_centers[6].y,block_centers[7].x,block_centers[7].y,
                           block_centers[8].x,block_centers[8].y])#棋盘格子中心坐标
+            #show_board()#取消注释以调试参数
             UartReceiveDate()
             pyb.delay(100)
     #test_theta()#取消注释以观察theta值，请先find_theta()
