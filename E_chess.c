@@ -121,7 +121,7 @@ void renew_step_color() {
 void renew_now_board() {
 
 }
-int next_step() {
+void next_step() {
     result[0] = 0;//¿ªÊ¼¼ÆËã
     renew_now_board();
     detectAndRestorePiece();

@@ -5,12 +5,12 @@
 #4.串口发送1/2.1:更新棋子状态2:更新棋盘状态(！！！！！仅在要旋转棋盘时使用！！！！！)
 #需要调试的参数---------------------------------------------------------------------------------------------------------
 lens_corr_threshold = 1.3                               # 畸变矫正参数调高方形四角变尖，调低方形变圆
-black_threshold = (0, 55, -50, 50, -50, 50)             # 边框颜色阈值，调第二位（现在是55），调高识别更宽松，调低识别更严格
-standard_edge_rect_length = 75                          # 标准边框边长的一半
+black_threshold = (23, 45, -44, -13, 9, 34)             # 边框颜色阈值，调第二位（现在是55），调高识别更宽松，调低识别更严格
+standard_edge_rect_length = 82                          # 标准边框边长的一半
 background_color_threshold = (0,0,0,0,0,0)              # 背景颜色阈值(不重要，没用上)    背景value为0
 black_chess_threshold = (0, 30, -50, 50, -50, 50)       # 黑棋阈值                      黑子value为1
 white_chess_threshold = (70, 100, -50, 50, -50, 50)     # 白棋阈值                      白子value为-1
-show_continually = False                                    # 是否卡死在show_board()里,调试standard_edge_rect_length时请打开
+show_continually = True                                    # 是否卡死在show_board()里,调试standard_edge_rect_length时请打开
 #----------------------------------------------------------------------------------------------------------------------
 
 import sensor
@@ -42,7 +42,10 @@ x = 0
 
 ########串口发送数据函数处理#########
 def UartSendDate(data):
-    suffix_elements = [0x43,0x4B,0x59,0x46]
+    prefix_elements = [0x43,0x4B]
+    suffix_elements = [0x59,0x46]
+    # 在列表前面插入元素
+    data[:0] = prefix_elements  # 切片赋值
     # 将元素添加到列表后面
     data.extend(suffix_elements)
     sendData=bytearray(data)
@@ -54,7 +57,7 @@ def UartReceiveDate():  #这个函数不能运行太快，否则会导致串口�
     global x
     global data
     global mode
-    
+
     data[0] = uart.readchar()
     data[1] = uart.readchar()
     data[2] = uart.readchar()
@@ -111,7 +114,7 @@ def renew_board():
 
 def show_board():
     img=sensor.snapshot()
-    # img.lens_corr(lens_corr_threshold)
+    img.lens_corr(lens_corr_threshold)
     # img.binary([black_threshold])
     # img.invert()
     # img.bilateral(1, color_sigma=1, space_sigma=1)
@@ -127,10 +130,17 @@ def show_board():
         # img.invert()
         # img.bilateral(1, color_sigma=1, space_sigma=1)
         img.draw_rectangle(standard_edge_rect_corners[0][0],standard_edge_rect_corners[0][1],standard_edge_rect_corners[1][0]-standard_edge_rect_corners[0][0],standard_edge_rect_corners[1][1]-standard_edge_rect_corners[0][1],color=(255,0,0))
+        img.draw_circle(int((standard_edge_rect_corners[0][0]+standard_edge_rect_corners[1][0])/2),int((standard_edge_rect_corners[0][1]+standard_edge_rect_corners[1][1])/2),3,color=(255,0,0))
         for i in range(9):
             if block_centers[i] is not None:
                 img.draw_circle(block_centers[i].x, block_centers[i].y, 9, color=(((block_centers[i].value)+1)*126, ((block_centers[i].value)+1)*126, ((block_centers[i].value)+1)*126),thickness=3)
+
+
 def find_theta():
+    kernel_size = 1 # 3x3==1, 5x5==2, 7x7==3, etc.
+    kernel = [-2, -1,  0, \
+              -1,  1,  1, \
+               0,  1,  2]
     matching_counts = 0
     error_time=0
     loop = True
@@ -141,10 +151,12 @@ def find_theta():
         standard_line_cnt = 0
         img = sensor.snapshot()
         img.lens_corr(lens_corr_threshold)
-        img.binary([black_threshold])
+        img.morph(kernel_size, kernel)
+        #img.binary([black_threshold])
         img.invert()
-        img.erode(1)
-        img.bilateral(1, color_sigma=1, space_sigma=1)
+        #img.dilate(1)
+        #img.erode(1)
+        #img.bilateral(2, color_sigma=1, space_sigma=1)
         lines = img.find_line_segments(merge_distance=10, max_theta_difference=5)
         for l in lines:
             if l.length() > img.height() / 2 and ((l.theta() <= 180 and l.theta() > 175) or (l.theta() < 5 and l.theta() >= 0) or (l.theta() < 95 and l.theta() > 85)):
@@ -201,7 +213,7 @@ def color_recognition():
         if trust_value>90:
             block_centers[i].value=-1
     del white_chess_map
-    
+
 
 def init_mode_choose():
     while(mode==0):
@@ -209,28 +221,31 @@ def init_mode_choose():
 
 
 sensor.reset()
-sensor.set_framesize(sensor.QVGA)
+sensor.set_framesize(sensor.VGA)
 sensor.set_pixformat(sensor.RGB565)
+sensor.set_windowing(160,120,320,240)
 
+#show_board()#取消注释以调试参数edge_rect_corners
+mode=2#等待选择模式,1:更新棋子状态2:更新棋盘状态(！！！！！仅在要旋转棋盘时使用！！！！！)
+init_mode_choose()#用串口启动
+renew_board()#初始化棋盘
 
 while(True):
-    #show_board()#取消注释以调试参数edge_rect_corners
-    mode=1#等待选择模式,1:更新棋子状态2:更新棋盘状态(！！！！！仅在要旋转棋盘时使用！！！！！)
-    init_mode_choose()#用串口启动
-    renew_board()#初始化棋盘
-    
     if mode== 2:
         rect_theta=find_theta()
         renew_board()
-        UartSendDate([block_centers[0].x,block_centers[0].y,block_centers[1].x,block_centers[1].y,
-                      block_centers[2].x,block_centers[2].y,block_centers[3].x,block_centers[3].y,
-                      block_centers[4].x,block_centers[4].y,block_centers[5].x,block_centers[5].y,
-                      block_centers[6].x,block_centers[6].y,block_centers[7].x,block_centers[7].y,
-                      block_centers[8].x,block_centers[8].y,rect_theta])#棋盘格子中心坐标
+        print(rect_theta)
+        show_board()#取消注释以调试参数
+        while(mode==2):
+            UartSendDate([mode,block_centers[0].x,block_centers[0].y,block_centers[1].x,block_centers[1].y,
+                          block_centers[2].x,block_centers[2].y,block_centers[3].x,block_centers[3].y,
+                          block_centers[4].x,block_centers[4].y,block_centers[5].x,block_centers[5].y,
+                          block_centers[6].x,block_centers[6].y,block_centers[7].x,block_centers[7].y,
+                          block_centers[8].x,block_centers[8].y])#棋盘格子中心坐标
     #test_theta()#取消注释以观察theta值，请先find_theta()
     if mode==1:
         color_recognition()#请先renew_block()
-        show_board()#取消注释以调试参数
-        UartSendDate([block_centers[0].value,block_centers[1].value,block_centers[2].value,
+        #show_board()#取消注释以调试参数
+        UartSendDate([mode,block_centers[0].value,block_centers[1].value,block_centers[2].value,
                       block_centers[3].value,block_centers[4].value,block_centers[5].value,
                       block_centers[6].value,block_centers[7].value,block_centers[8].value])#格子状态
