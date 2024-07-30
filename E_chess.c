@@ -1,19 +1,13 @@
-#include <stdio.h>
-
-#define EMPTY 0
-#define BLACK 1
-#define WHITE -1
+#include "E_chess.h"
 
 
-int result[3] = {0, 0, 0}; // µÚÒ»Îª±íÊ¾×´Ì¬£º0¼ÆËãÖĞ 1ÏÂÆåÖ¸Áî 2ÓÎÏ·½áÊø
-                            //µÚ¶şÎ»±íÊ¾Ä¿±êÎ»ÖÃ£º1~9¡£                                                 ÓÎÏ·½áÊøÇé¿öÏÂ£º1ºÚÊ¤2°×Ê¤3Æ½¾Ö4´íÎó
-                            //µÚÈıÎ»±íÊ¾ÆğÊ¼Î»ÖÃ£º0´ÓºÚÆåÅÌ×¥È¡1~9¸´Î»±»ÒÆ¶¯µÄÆå×ÓµÄµØ·½10´Ó°×ÆåÅÌ×¥È¡      ´íÎóµÄÇé¿öÏÂ£º1°×ÆåÏÈÏÂ
-int step_color = BLACK;    // ¼ÇÂ¼µ±Ç°²½ÆåµÄÑÕÉ«
-int lastBoard[9] = {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
-int board[9]; //¸¨Öú¼ÆËãÆåÅÌ£¬1ÎªµçÄÔ·½£¬-1ÎªÍæ¼Ò·½£¬0Îª¿Õ¸ñ
-int now_board[9]= {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}; //µ±Ç°ÆåÅÌ×´Ì¬,´®¿Ú´«ÈëÊı¾İ¸üĞÂµ½ÕâÀï
+void next_step() / next_step() next_step()
+{
+    renew_now_board();
+    renew_result();
+}
 
-// ¼ì²â²¢»Ö¸´±»ÒÆ¶¯µÄÆå×Ó
+// æ£€æµ‹å¹¶æ¢å¤è¢«ç§»åŠ¨çš„æ£‹å­
 void detectAndRestorePiece() {
     for (int i = 0; i < 9; i++) {
         if (lastBoard[i] != EMPTY && now_board[i] == EMPTY) {
@@ -29,12 +23,12 @@ void detectAndRestorePiece() {
     }
 }
 
-// ¼ì²éÆåÅÌÉÏÊÇ·ñÓĞ»ñÊ¤
+// æ£€æŸ¥æ£‹ç›˜ä¸Šæ˜¯å¦æœ‰è·èƒœ
 int is_Win() {
     for (int i = 0; i < 3; i++) {
-        if (board[i] != 0 && board[i] == board[i + 3] && board[i] == board[i + 6]) // ĞĞ
+        if (board[i] != 0 && board[i] == board[i + 3] && board[i] == board[i + 6]) // è¡Œ
             return (board[i] == WHITE ? 0 : 1);
-        if (board[3 * i] != 0 && board[3 * i] == board[3 * i + 1] && board[3 * i] == board[3 * i + 2]) // ÁĞ
+        if (board[3 * i] != 0 && board[3 * i] == board[3 * i + 1] && board[3 * i] == board[3 * i + 2]) // åˆ—
             return (board[3 * i] == WHITE ? 0 : 1);
     }
 
@@ -46,7 +40,7 @@ int is_Win() {
     return -1;
 }
 
-// ¹ÀÖµº¯Êı
+// ä¼°å€¼å‡½æ•°
 int eval() {
     int res = 0;
     for (int i = 0; i < 9; i++)
@@ -61,12 +55,12 @@ int eval() {
 }
 
 int MinMaxSearch(int *idx, int step, int a, int b) {
-    if (is_Win() >= 0) return eval(); // ¼ì²éÊÇ·ñÓĞÒ»·½»ñÊ¤
+    if (is_Win() >= 0) return eval(); // æ£€æŸ¥æ˜¯å¦æœ‰ä¸€æ–¹è·èƒœ
     if (step & 1) a = -100;
     else b = 100;
     int positions[9];
     int num_positions = 0;
-    // ÕÒ³öËùÓĞ¿ÉÏÂÆåµÄÎ»ÖÃ
+    // æ‰¾å‡ºæ‰€æœ‰å¯ä¸‹æ£‹çš„ä½ç½®
     for (int i = 0; i < 9; i++) {
             if (board[i] == 0) {
                 positions[num_positions++] = i;
@@ -75,7 +69,7 @@ int MinMaxSearch(int *idx, int step, int a, int b) {
 
     if (num_positions == 0) {
         return eval(); 
-    }// Æ½¾ÖµÄÇé¿ö
+    }// å¹³å±€çš„æƒ…å†µ
 
     for (int i = 0; i < num_positions; i++) {
         int x = positions[i];
@@ -118,11 +112,9 @@ void renew_step_color() {
         return;
     }
 }
-void renew_now_board() {
 
-}
-void next_step() {
-    result[0] = 0;//¿ªÊ¼¼ÆËã
+void renew_result() {//æ›´æ–°result
+    result[0] = 0;//å¼€å§‹è®¡ç®—
     renew_now_board();
     detectAndRestorePiece();
     if (result[0] != 0) {
@@ -151,8 +143,8 @@ void next_step() {
         }
     }
     int x = -1;
-    MinMaxSearch(&x, 1, -100, 100); // ÕÒµ½×îÓÅ×ß·¨
-    if (x == -1) {//Æ½¾Ö
+    MinMaxSearch(&x, 1, -100, 100); // æ‰¾åˆ°æœ€ä¼˜èµ°æ³•
+    if (x == -1) {//å¹³å±€
         result[0] = 2;
         result[1] = 3;
         result[2] = 0;
@@ -160,6 +152,6 @@ void next_step() {
     }
     result[0] = 1;
     result[1] = x;
-    result[2] = 5*(-1*step_color+1);//¸üĞÂÊı¾İ
+    result[2] = 5*(-1*step_color+1);//æ›´æ–°æ•°æ®
 }
 

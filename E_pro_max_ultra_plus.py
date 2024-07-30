@@ -7,10 +7,10 @@
 lens_corr_threshold = 1.3                               # 畸变矫正参数调高方形四角变尖，调低方形变圆
 black_threshold = (23, 45, -44, -13, 9, 34)             # 边框颜色阈值，调第二位（现在是55），调高识别更宽松，调低识别更严格
 standard_edge_rect_length = 82                          # 标准边框边长的一半
-background_color_threshold = (0,0,0,0,0,0)              # 背景颜色阈值(不重要，没用上)    背景value为0
+background_color_threshold = (0,0,0,0,0,0)              # 背景颜色阈值绿色(用于识别手指)  背景value为0
 black_chess_threshold = (0, 30, -50, 50, -50, 50)       # 黑棋阈值                      黑子value为1
 white_chess_threshold = (70, 100, -50, 50, -50, 50)     # 白棋阈值                      白子value为-1
-show_continually = False                                    # 是否卡死在show_board()里,调试standard_edge_rect_length时请打开
+show_continually = False                                # 是否卡死在show_board()里,调试standard_edge_rect_length时请打开
 #----------------------------------------------------------------------------------------------------------------------
 import sensor
 import cmath
@@ -22,7 +22,7 @@ class Block:
         self.x = x
         self.y = y
         self.value = value
-
+uart = pyb.UART(3, 115200, timeout_char = 1000)
 standard_edge_rect_corners = ((160 - standard_edge_rect_length, 120 - standard_edge_rect_length),
                              (160 + standard_edge_rect_length, 120 + standard_edge_rect_length))  # 标准边框左上，右下角的坐标
 rect_theta = 0  # 现在的边框的斜度
@@ -31,13 +31,14 @@ real_edge_rect_corners = ((standard_edge_rect_corners[0][0], standard_edge_rect_
                           (standard_edge_rect_corners[1][0], standard_edge_rect_corners[1][1]),
                           (standard_edge_rect_corners[0][0], standard_edge_rect_corners[1][1]))
 
+thresholds = (white_chess_threshold,background_color_threshold,black_chess_threshold)
 
-uart = pyb.UART(3, 115200, timeout_char = 1000)
 
 blocks = [Block() for _ in range(9)]
 block_centers = [None] * 9  # 初始化为None
 data = [0]*10
-
+not_finger_flag= [0]*9#为零时可能为手指
+edge_finger_flag = [0]*(4*standard_edge_rect_length)
 ########串口发送数据函数处理#########
 def UartSendDate(data):
     prefix_elements = [0x43,0x4B]
@@ -202,33 +203,81 @@ def find_theta():
                 print('识别成功')
                 return last_theta
 
+def find_furthest_point(list, target):
+    max_distance = 0
+    for i in list:
+        distance2 = (i%3- target%3)*(i%3- target%3) + (i/3 - target/3)*(i/3 - target/3)
+        if distance2 > max_distance:
+            furthest_point = i
+            max_distance = distance2
+    return furthest_point
+
 def color_recognition():
     global block_centers
-    img = sensor.snapshot()
-    img.lens_corr(lens_corr_threshold)
-    black_chess_map=img.binary([black_chess_threshold],to_bitmap=True,copy=True)
-    for i in range(9):
-        trust_value=0
-        for j in range(-5,5):
-            for k in range(-5,5):
-                if black_chess_map.get_pixel(block_centers[i].x+j, block_centers[i].y+k)==1:
-                    trust_value+=1
-        #print("black_chess_value_%d:%d" % (i,trust_value))
-        if trust_value>90:
-            block_centers[i].value=1
-    del black_chess_map
-    white_chess_map=img.binary([white_chess_threshold],to_bitmap=True,copy=True)
-    for i in range(9):
-        trust_value=0
-        for j in range(-5,5):
-            for k in range(-5,5):
-                if white_chess_map.get_pixel(block_centers[i].x+j, block_centers[i].y+k)==1:
-                    trust_value+=1
-        #print("white_chess_value_%d:%d" % (i,trust_value))
-        if trust_value>90:
-            block_centers[i].value=-1
-    del white_chess_map
+    global not_finger_flag
+    not_finger_flag= [0]*9
+    totally_recognized_flag=9
+    finger_block=0
+    while(totally_recognized_flag>0 and finger_block==0):
+        totally_recognized_flag=9
+        img = sensor.snapshot()
+        img.lens_corr(lens_corr_threshold)
+        for l in range(-1,1):
+            threshold_chess_map=img.binary([thresholds[i]],to_bitmap=True,copy=True)
+            for i in range(9):
+                trust_value=0
+                for j in range(-5,5):
+                    for k in range(-5,5):
+                        if threshold_chess_map.get_pixel(block_centers[i].x+j, block_centers[i].y+k)==1:
+                            trust_value+=1
+                #print("black_chess_value_%d:%d" % (i,trust_value))
+                if trust_value>90:
+                    block_centers[i].value=l
+                    not_finger_flag[i]+=1
+                    totally_recognized_flag-=1
 
+            #手指识别
+            for i in range(4):
+                for j in range(standard_edge_rect_length):
+                    x=int(real_edge_rect_corners[i][0]+(real_edge_rect_corners[(i+1)%4][0]-real_edge_rect_corners[i][0])/standard_edge_rect_length*j)
+                    y=int(real_edge_rect_corners[i][1]+(real_edge_rect_corners[(i+1)%4][1]-real_edge_rect_corners[i][1])/standard_edge_rect_length*j)
+                    if (threshold_chess_map.get_pixel(x,y)==1 or threshold_chess_map.get_pixel(x+1,y)==1 or threshold_chess_map.get_pixel(x,y+1)==1 or threshold_chess_map.get_pixel(x-1,y)==1 or threshold_chess_map.get_pixel(x,y-1)==1):
+                        edge_finger_flag[i*j]+=1
+            del threshold_chess_map
+        for i in range(4*standard_edge_rect_length):
+            if edge_finger_flag[i]==0:
+                sum+=i
+                count+=1
+        if count!=0:
+            finger_block_edge_block=sum/count
+            finger_block_edge_block=round(finger_block_edge_block*3/standard_edge_rect_length)+1
+            if finger_block_edge_block==4:
+                finger_block_edge_block=3
+            elif finger_block_edge_block==5:
+                finger_block_edge_block=6
+            elif finger_block_edge_block==6 or finger_block_edge_block==7:
+                finger_block_edge_block=9
+                for i in range(int(standard_edge_rect_length/3)):
+                    if edge_finger_flag[i+int(standard_edge_rect_length/3*5)]==0:
+                        finger_block_edge_block=1
+                        break
+            elif finger_block_edge_block==8:
+                finger_block_edge_block=8
+            elif finger_block_edge_block==9 or finger_block_edge_block==10:
+                finger_block_edge_block=7
+            elif finger_block_edge_block==11:
+                finger_block_edge_block=4
+            elif finger_block_edge_block==12:
+                finger_block_edge_block=1
+        possible_finger_block=[]
+        for i in range(9):
+            if not_finger_flag[i]==0:
+                possible_finger_block.append(i)
+        if possible_finger_block.count(finger_block_edge_block)==0:
+            continue
+        else:
+            return find_furthest_point(possible_finger_block,finger_block_edge_block)
+    return 0
 
 def init_mode_choose():
     while(mode!=1 and mode !=2):
@@ -248,12 +297,12 @@ renew_board()#初始化棋盘
 while(True):
     init_mode_choose()#用串口启动
     #UartSendDate([mode])#发送模式选择模式
-    if mode== 2:
+    if mode== 0:
         rect_theta=find_theta()
         renew_board()
         #print(rect_theta)
         #show_board()#取消注释以调试参数
-        while(mode==2):
+        while(mode==0):
             UartSendDate([mode,block_centers[0].x,block_centers[0].y,block_centers[1].x,block_centers[1].y,
                           block_centers[2].x,block_centers[2].y,block_centers[3].x,block_centers[3].y,
                           block_centers[4].x,block_centers[4].y,block_centers[5].x,block_centers[5].y,
@@ -264,10 +313,13 @@ while(True):
             pyb.delay(100)
     #test_theta()#取消注释以观察theta值，请先find_theta()
     while(mode==1):
-        color_recognition()#请先renew_block()
+        finger=color_recognition()#请先renew_block()
         #show_board()#取消注释以调试参数
-        UartSendDate([mode,block_centers[0].value,block_centers[1].value,block_centers[2].value,
-                      block_centers[3].value,block_centers[4].value,block_centers[5].value,
-                      block_centers[6].value,block_centers[7].value,block_centers[8].value])#格子状态
+        if finger==0:
+            UartSendDate([mode,block_centers[0].value,block_centers[1].value,block_centers[2].value,
+                        block_centers[3].value,block_centers[4].value,block_centers[5].value,
+                        block_centers[6].value,block_centers[7].value,block_centers[8].value])#格子状态
+        else:
+            UartSendDate([3,block_centers[finger].x,block_centers[finger].y])
         UartReceiveDate()
         pyb.delay(100)
