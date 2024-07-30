@@ -1,12 +1,5 @@
 #include "E_chess.h"
 
-
-void next_step() / next_step() next_step()
-{
-    renew_now_board();
-    renew_result();
-}
-
 // 检测并恢复被移动的棋子
 void detectAndRestorePiece() {
     for (int i = 0; i < 9; i++) {
@@ -113,9 +106,8 @@ void renew_step_color() {
     }
 }
 
-void renew_result() {//更新result
+void next_step(){//更新result
     result[0] = 0;//开始计算
-    renew_now_board();
     detectAndRestorePiece();
     if (result[0] != 0) {
         return;

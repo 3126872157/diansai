@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "e_chess.h": "c",
+        "stdio.h": "c"
+    }
+}

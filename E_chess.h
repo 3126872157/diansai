@@ -26,10 +26,8 @@ int is_Win();
 int eval();
 int MinMaxSearch(int *idx, int step, int a, int b);
 void renew_step_color();
-void renew_result();
-
 //只用调用这个函数，其他是内部的
-int next_step();      //获得下一步棋位置，之后可以读取数组next_step_pos
+void next_step();//获得下一步棋位置，之后可以读取数组result
 
 
 #ifdef __cplusplus
