@@ -34,7 +34,7 @@ real_edge_rect_corners = ((standard_edge_rect_corners[0][0], standard_edge_rect_
                           (standard_edge_rect_corners[1][0], standard_edge_rect_corners[1][1]),
                           (standard_edge_rect_corners[0][0], standard_edge_rect_corners[1][1]))
 
-thresholds = (white_chess_threshold,background_color_threshold,black_chess_threshold)
+thresholds = (white_chess_threshold,background_color_threshold,black_chess_threshold,finger_threshold)
 
 
 blocks = [Block() for _ in range(9)]
@@ -211,7 +211,7 @@ def find_furthest_point(list, target):
     max_distance = 0
     furthest_point = 0
     for i in list:
-        distance2 = (i%3- target%3)*(i%3- target%3) + (i/3 - target/3)*(i/3 - target/3)
+        distance2 = ((i+1)%3- (target+1)%3)*((i+1)%3- ((target+1)%3)) + (i/3 - target/3)*(i/3 - target/3)
         if distance2 > max_distance:
             furthest_point = i
             max_distance = distance2
@@ -221,15 +221,16 @@ def color_recognition():
     global block_centers
     global not_finger_flag
     global thresholds
-    edge_finger_flag = [0]*(4*standard_edge_rect_length)
-    not_finger_flag= [0]*9
+    edge_finger_flag = [1]*(4*standard_edge_rect_length)
+    not_finger_flag= [1]*9
     totally_recognized_flag=9
     finger_block=0
     while(totally_recognized_flag>0 and finger_block==0):
         totally_recognized_flag=9
+        finger_block_edge_block=0
         img = sensor.snapshot()
         img.lens_corr(lens_corr_threshold)
-        for l in range(-1,2):
+        for l in range(-1,3):
             threshold_chess_map=img.binary([thresholds[l+1]],to_bitmap=True,copy=True)
             for i in range(9):
                 trust_value=0
@@ -238,20 +239,24 @@ def color_recognition():
                         if threshold_chess_map.get_pixel(block_centers[i].x+j, block_centers[i].y+k)==1:
                             trust_value+=1
                 #print("%d value_%d:%d" % (l,i,trust_value))
-                if trust_value>90:
+                if l==2:
+                    if trust_value>10:
+                        not_finger_flag[i]=0
+                        #print("%d isfinger" % (i+1))
+                elif trust_value>90:
                     block_centers[i].value=l
-                    not_finger_flag[i]+=1
                     totally_recognized_flag-=1
-
-            #手指识别
-            for i in range(4):
-                for j in range(standard_edge_rect_length):
-                    x=int(real_edge_rect_corners[i][0]+(real_edge_rect_corners[(i+1)%4][0]-real_edge_rect_corners[i][0])/standard_edge_rect_length*j)
-                    y=int(real_edge_rect_corners[i][1]+(real_edge_rect_corners[(i+1)%4][1]-real_edge_rect_corners[i][1])/standard_edge_rect_length*j)
-                    if (threshold_chess_map.get_pixel(x,y)==1 or threshold_chess_map.get_pixel(x+1,y)==1 or threshold_chess_map.get_pixel(x,y+1)==1 or threshold_chess_map.get_pixel(x-1,y)==1 or threshold_chess_map.get_pixel(x,y-1)==1):
-                        edge_finger_flag[i*standard_edge_rect_length+j]+=1
-                        img.draw_circle(x,y,1,(0,255,255))
             del threshold_chess_map
+        threshold_chess_map=img.binary([finger_threshold],to_bitmap=True,copy=True)
+        #手指识别
+        for i in range(4):
+            for j in range(standard_edge_rect_length):
+                x=int(real_edge_rect_corners[i][0]+(real_edge_rect_corners[(i+1)%4][0]-real_edge_rect_corners[i][0])/standard_edge_rect_length*j)
+                y=int(real_edge_rect_corners[i][1]+(real_edge_rect_corners[(i+1)%4][1]-real_edge_rect_corners[i][1])/standard_edge_rect_length*j)
+                if (threshold_chess_map.get_pixel(x,y)==1 and threshold_chess_map.get_pixel(x+1,y)==1 and threshold_chess_map.get_pixel(x,y+1)==1 and threshold_chess_map.get_pixel(x-1,y)==1 and threshold_chess_map.get_pixel(x,y-1)==1):
+                    edge_finger_flag[i*standard_edge_rect_length+j]-=1
+                    img.draw_circle(x,y,1,(0,255,255))
+        del threshold_chess_map
         #print("flag:%d" % totally_recognized_flag)
         sum=0
         count=0
@@ -272,7 +277,7 @@ def color_recognition():
                 finger_block_edge_block=6
             elif finger_block_edge_block==6 or finger_block_edge_block==7:
                 finger_block_edge_block=1
-                for i in range(int(standard_edge_rect_length/3*2)):
+                for i in range(int(standard_edge_rect_length*2/3)):
                     if edge_finger_flag[i+int(standard_edge_rect_length/3*5)]==0:
                         finger_block_edge_block=9
                         break
@@ -299,7 +304,8 @@ def color_recognition():
                         print("未和边缘接触")
                         break
                 else:
-                    print(possible_finger_block)
+                    #print(possible_finger_block)
+                    #print(finger_block_edge_block)
                     final =find_furthest_point(possible_finger_block,finger_block_edge_block)
                     #print("final:%d" % final)
                     return final
@@ -317,7 +323,7 @@ sensor.set_framesize(sensor.VGA)
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_windowing(160,120,320,240)
 
-threshold_test(white_chess_threshold)
+#threshold_test(white_chess_threshold)
 
 #show_board()#取消注释以调试参数edge_rect_corners
 mode=1#等待选择模式,1:更新棋子状态2:更新棋盘状态(！！！！！仅在要旋转棋盘时使用！！！！！)
