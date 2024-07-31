@@ -6,14 +6,14 @@
 #5.mode==2:识别棋盘方向；mode==1:识别棋子；mode==3:发现手指！
 #6.流程如下：上电自动识别棋盘角度，循环发送九个坐标，等待单片机发送‘1’后开始循环识别颜色，传回棋子状态，若识别到手指则发送‘3，手指指向编号’。若收到2则开始重新识别棋盘角度并发送，并等待‘1’
 #需要调试的参数---------------------------------------------------------------------------------------------------------
-lens_corr_threshold = 1      # 畸变矫正参数调高方形四角变尖，调低方形变圆
+lens_corr_threshold = 0.8      # 畸变矫正参数调高方形四角变尖，调低方形变圆
 standard_edge_rect_length = 78                          # 标准边框边长的一半
 finger_threshold = (0, 100, 1, 30, 5, 43)
 black_threshold = (20, 50, -50, -10, 9, 37)             # 现在没用了！！！！边框颜色阈值，调第二位（现在是55），调高识别更宽松，调低识别更严格
 background_color_threshold = (20, 72, -55, -25, 10, 52) # 背景颜色阈值绿色(用于识别手指)  背景value为0
 black_chess_threshold =(0, 40, -55, 0, -23, 25)         # 黑棋阈值                      黑子value为1
 white_chess_threshold = (70, 100, -20, 30, -35, 37)     # 白棋阈值                      白子value为-1
-show_continually = False                                 # 是否卡死在show_board()里,调试standard_edge_rect_length时请打开
+show_continually =    True#False                            # 是否卡死在show_board()里,调试standard_edge_rect_length时请打开
 #----------------------------------------------------------------------------------------------------------------------
 import sensor
 import cmath
@@ -69,9 +69,11 @@ def UartReceiveDate():  #这个函数不能运行太快，否则会导致串口�
     data[7] = uart.readchar()
     data[8] = uart.readchar()
     data[9] = uart.readchar()
+    print("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,"% (data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9]))
     for x in range(6):
         if data[(x)%10] == 0x43 and data[(x+1)%10] == 0x4B and data[(x+3)%10] == 0x59 and data[(x+4)%10] == 0x46:
-            mode =  data[(x+2)%10]-48
+            mode =  data[(x+2)%10]
+            #print("mode=%d" % mode)
 ########串口接收数据函数处理完毕#############
 def rotate_point(x, y, angle):
     x -= 320 / 2
@@ -197,7 +199,7 @@ def find_theta():
             else:
                 matching_counts = 0
                 error_time+=1
-                if error_time>10:
+                if error_time>1:
                     loop=False
                     return 0#识别失败返回默认零度
                 print('识别失败 theta: %f last_theta:%f' % (theta, last_theta))
@@ -300,8 +302,9 @@ def color_recognition():
                     if possible_finger_block[0]==finger_block_edge_block:
                         return finger_block_edge_block
                     else:
-                        print("possible_finger_block:%d;finger_block_edge_block：%d" % (possible_finger_block[0],finger_block_edge_block))
                         print("未和边缘接触")
+                        print(possible_finger_block)
+                        print(finger_block_edge_block)
                         break
                 else:
                     #print(possible_finger_block)
@@ -323,10 +326,10 @@ sensor.set_framesize(sensor.VGA)
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_windowing(160,120,320,240)
 
-#threshold_test(white_chess_threshold)
+#threshold_test(white_chess_threshold)#取消注释以调试阈值
 
-#show_board()#取消注释以调试参数edge_rect_corners
-mode=1#等待选择模式,1:更新棋子状态2:更新棋盘状态(！！！！！仅在要旋转棋盘时使用！！！！！)
+show_board()#取消注释以调试参数edge_rect_corners
+mode=2#等待选择模式,1:更新棋子状态2:更新棋盘状态(！！！！！仅在要旋转棋盘时使用！！！！！)
 renew_board()#初始化棋盘
 while(True):
     if mode== 2:
@@ -340,6 +343,11 @@ while(True):
                           block_centers[4].x,block_centers[4].y,block_centers[5].x,block_centers[5].y,
                           block_centers[6].x,block_centers[6].y,block_centers[7].x,block_centers[7].y,
                           block_centers[8].x,block_centers[8].y])#棋盘格子中心坐标
+            print([mode,block_centers[0].x,block_centers[0].y,block_centers[1].x,block_centers[1].y,
+            block_centers[2].x,block_centers[2].y,block_centers[3].x,block_centers[3].y,
+            block_centers[4].x,block_centers[4].y,block_centers[5].x,block_centers[5].y,
+            block_centers[6].x,block_centers[6].y,block_centers[7].x,block_centers[7].y,
+            block_centers[8].x,block_centers[8].y])
             #show_board()#取消注释以调试参数
             UartReceiveDate()
             pyb.delay(100)
